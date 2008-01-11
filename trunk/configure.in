@@ -1,0 +1,900 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.61)
+AC_INIT([sj3], [2.0.1.21], [iwata@quasiquote.org])
+AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_SRCDIR([src/sj3serv/main.c])
+AC_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE([1.9.6])
+
+# Enable GNU extensions such as asprintf(3), BSD-originated functions,
+# POSIX features and more on glibc (and some other
+# implementations). See features.h. This macro should be placed here.
+AC_GNU_SOURCE
+
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+
+# Checks for libraries.
+LIBSJ3CORE_MAJOR_VERSION=2
+LIBSJ3CORE_MINOR_VERSION=0
+LIBSJ3CORE_MICRO_VERSION=121
+LIBSJ3CORE_MICRO_VERSION_SUFFIX=
+
+LIBSJ3CORE_VERSION=$LIBSJ3CORE_MAJOR_VERSION.$LIBSJ3CORE_MINOR_VERSION.$LIBSJ3CORE_MICRO_VERSION$LIBSJ3CORE_MICRO_VERSION_SUFFIX
+LIBSJ3CORE_VERSION_INFO=`expr $LIBSJ3CORE_MAJOR_VERSION + $LIBSJ3CORE_MINOR_VERSION`:$LIBSJ3CORE_MICRO_VERSION:$LIBSJ3CORE_MINOR_VERSION
+LIBSJ3CORE_VERSION_NUMBER=`expr $LIBSJ3CORE_MAJOR_VERSION \* 10000 + $LIBSJ3CORE_MINOR_VERSION \* 100 + $LIBSJ3CORE_MICRO_VERSION`
+
+AC_SUBST(LIBSJ3CORE_MAJOR_VERSION)
+AC_SUBST(LIBSJ3CORE_MINOR_VERSION)
+AC_SUBST(LIBSJ3CORE_MICRO_VERSION)
+AC_SUBST(LIBSJ3CORE_MICRO_VERSION_SUFFIX)
+AC_SUBST(LIBSJ3CORE_VERSION)
+AC_SUBST(LIBSJ3CORE_VERSION_INFO)
+AC_SUBST(LIBSJ3CORE_VERSION_NUMBER)
+AC_SUBST(LIBSJ3CORE_VERSION_EXTRA)
+
+LIBSJ3LIB_MAJOR_VERSION=2
+LIBSJ3LIB_MINOR_VERSION=0
+LIBSJ3LIB_MICRO_VERSION=121
+LIBSJ3LIB_MICRO_VERSION_SUFFIX=
+
+LIBSJ3LIB_VERSION=$LIBSJ3LIB_MAJOR_VERSION.$LIBSJ3LIB_MINOR_VERSION.$LIBSJ3LIB_MICRO_VERSION$LIBSJ3LIB_MICRO_VERSION_SUFFIX
+LIBSJ3LIB_VERSION_INFO=`expr $LIBSJ3LIB_MAJOR_VERSION + $LIBSJ3LIB_MINOR_VERSION`:$LIBSJ3LIB_MICRO_VERSION:$LIBSJ3LIB_MINOR_VERSION
+LIBSJ3LIB_VERSION_NUMBER=`expr $LIBSJ3LIB_MAJOR_VERSION \* 10000 + $LIBSJ3LIB_MINOR_VERSION \* 100 + $LIBSJ3LIB_MICRO_VERSION`
+
+AC_SUBST(LIBSJ3LIB_MAJOR_VERSION)
+AC_SUBST(LIBSJ3LIB_MINOR_VERSION)
+AC_SUBST(LIBSJ3LIB_MICRO_VERSION)
+AC_SUBST(LIBSJ3LIB_MICRO_VERSION_SUFFIX)
+AC_SUBST(LIBSJ3LIB_VERSION)
+AC_SUBST(LIBSJ3LIB_VERSION_INFO)
+AC_SUBST(LIBSJ3LIB_VERSION_NUMBER)
+AC_SUBST(LIBSJ3LIB_VERSION_EXTRA)
+
+LIBSJ3RKCV_MAJOR_VERSION=2
+LIBSJ3RKCV_MINOR_VERSION=0
+LIBSJ3RKCV_MICRO_VERSION=121
+LIBSJ3RKCV_MICRO_VERSION_SUFFIX=
+
+LIBSJ3RKCV_VERSION=$LIBSJ3RKCV_MAJOR_VERSION.$LIBSJ3RKCV_MINOR_VERSION.$LIBSJ3RKCV_MICRO_VERSION$LIBSJ3RKCV_MICRO_VERSION_SUFFIX
+LIBSJ3RKCV_VERSION_INFO=`expr $LIBSJ3RKCV_MAJOR_VERSION + $LIBSJ3RKCV_MINOR_VERSION`:$LIBSJ3RKCV_MICRO_VERSION:$LIBSJ3RKCV_MINOR_VERSION
+LIBSJ3RKCV_VERSION_NUMBER=`expr $LIBSJ3RKCV_MAJOR_VERSION \* 10000 + $LIBSJ3RKCV_MINOR_VERSION \* 100 + $LIBSJ3RKCV_MICRO_VERSION`
+
+AC_SUBST(LIBSJ3RKCV_MAJOR_VERSION)
+AC_SUBST(LIBSJ3RKCV_MINOR_VERSION)
+AC_SUBST(LIBSJ3RKCV_MICRO_VERSION)
+AC_SUBST(LIBSJ3RKCV_MICRO_VERSION_SUFFIX)
+AC_SUBST(LIBSJ3RKCV_VERSION)
+AC_SUBST(LIBSJ3RKCV_VERSION_INFO)
+AC_SUBST(LIBSJ3RKCV_VERSION_NUMBER)
+AC_SUBST(LIBSJ3RKCV_VERSION_EXTRA)
+
+
+AC_LIBTOOL_WIN32_DLL
+AC_PROG_LIBTOOL
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS([ \
+	arpa/inet.h \
+	fcntl.h \
+	getopt.h \
+	locale.h \
+	netdb.h \
+	syslog.h \
+	netinet/in.h \
+	stdlib.h \
+	string.h \
+	strings.h \
+	sys/file.h \
+	sys/ioctl.h \
+	sys/param.h \
+	sys/socket.h \
+	sys/time.h \
+	termio.h \
+	termios.h \
+	unistd.h \
+	utmp.h \
+	utmpx.h \
+	wctype.h \
+])
+
+case "$host" in
+*-*-aix*)
+	# Some versions of VAC won't allow macro redefinitions at
+	# -qlanglevel=ansi, and autoconf 2.60 sometimes insists on using that
+	# particularly with older versions of vac or xlc.
+	# It also throws errors about null macro argments, but these are
+	# not fatal.
+	AC_MSG_CHECKING(if compiler allows macro redefinitions)
+	AC_COMPILE_IFELSE(
+	    [AC_LANG_SOURCE([[
+#define testmacro foo
+#define testmacro bar
+int main(void) { exit(0); }
+	    ]])],
+	    [ AC_MSG_RESULT(yes) ],
+	    [ AC_MSG_RESULT(no)
+	      CC="`echo $CC | sed 's/-qlanglvl\=ansi//g'`"
+	      LD="`echo $LD | sed 's/-qlanglvl\=ansi//g'`"
+	      CFLAGS="`echo $CFLAGS | sed 's/-qlanglvl\=ansi//g'`"
+	      CPPFLAGS="`echo $CPPFLAGS | sed 's/-qlanglvl\=ansi//g'`"
+	    ]
+	)
+
+	AC_MSG_CHECKING([how to specify blibpath for linker ($LD)])
+	if (test -z "$blibpath"); then
+		blibpath="/usr/lib:/lib"
+	fi
+	saved_LDFLAGS="$LDFLAGS"
+	if test "$GCC" = "yes"; then
+		flags="-Wl,-blibpath: -Wl,-rpath, -blibpath:"
+	else
+		flags="-blibpath: -Wl,-blibpath: -Wl,-rpath,"
+	fi
+	for tryflags in $flags ;do
+		if (test -z "$blibflags"); then
+			LDFLAGS="$saved_LDFLAGS $tryflags$blibpath"
+			AC_TRY_LINK([], [], [blibflags=$tryflags])
+		fi
+	done
+	if (test -z "$blibflags"); then
+		AC_MSG_RESULT(not found)
+		AC_MSG_ERROR([*** must be able to specify blibpath on AIX - check config.log])
+	else
+		AC_MSG_RESULT($blibflags)
+	fi
+	LDFLAGS="$saved_LDFLAGS"
+	;;
+*-*-cygwin*)
+	AC_DEFINE(HAVE_CYGWIN, 1, [Define if you are on Cygwin])
+	;;
+*-*-dgux*)
+	;;
+*-*-darwin*)
+	AC_MSG_CHECKING(if we have working getaddrinfo)
+	AC_TRY_RUN([#include <mach-o/dyld.h>
+main() { if (NSVersionOfRunTimeLibrary("System") >= (60 << 16))
+		exit(0);
+	else
+		exit(1);
+}], [AC_MSG_RESULT(working)],
+	[AC_MSG_RESULT(buggy)
+	AC_DEFINE(BROKEN_GETADDRINFO, 1, [getaddrinfo is broken (if present)])],
+	[AC_MSG_RESULT(assume it is working)])
+	;;
+*-*-dragonfly*)
+	;;
+*-*-hpux*)
+	# first we define all of the options common to all HP-UX releases
+	CPPFLAGS="$CPPFLAGS -D_HPUX_SOURCE -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED=1"
+	LIBS="$LIBS -lsec"
+	AC_CHECK_LIB(xnet, t_error, ,
+	    AC_MSG_ERROR([*** -lxnet needed on HP-UX - check config.log ***]))
+
+	# next, we define all of the options specific to major releases
+	case "$host" in
+	*-*-hpux10*)
+		if test -z "$GCC"; then
+			CFLAGS="$CFLAGS -Ae"
+		fi
+		;;
+	*-*-hpux11*)
+		;;
+	esac
+
+	# lastly, we define options specific to minor releases
+	case "$host" in
+	*-*-hpux10.26)
+		;;
+	esac
+	;;
+*-*-irix5*)
+	PATH="$PATH:/usr/etc"
+	AC_DEFINE(BROKEN_INET_NTOA, 1,
+		[Define if you system's inet_ntoa is busted
+		(e.g. Irix gcc issue)])
+	;;
+*-*-irix6*)
+	PATH="$PATH:/usr/etc"
+	AC_DEFINE(BROKEN_INET_NTOA)
+	;;
+*-*-linux*)
+	AC_DEFINE(DONT_TRY_OTHER_AF, 1, [Workaround more Linux IPv6 quirks])
+	inet6_default_4in6=yes
+	;;
+mips-sony-bsd|mips-sony-newsos4)
+	SONY=1
+	;;
+*-*-netbsd*)
+	;;
+*-*-freebsd*)
+	;;
+*-*-bsdi*)
+	;;
+*-next-*)
+	;;
+*-*-openbsd*)
+	AC_DEFINE(HAVE_ATTRIBUTE__SENTINEL__, 1, [OpenBSD's gcc has sentinel])
+	AC_DEFINE(HAVE_ATTRIBUTE__BOUNDED__, 1, [OpenBSD's gcc has bounded])
+	;;
+*-*-solaris*)
+	;;
+*-*-sunos4*)
+	CPPFLAGS="$CPPFLAGS -DSUNOS4"
+	;;
+*-ncr-sysv*)
+	LIBS="$LIBS -lc89"
+	;;
+*-sni-sysv*)
+	# /usr/ucblib MUST NOT be searched on ReliantUNIX
+	AC_CHECK_LIB(dl, dlsym, ,)
+	# -lresolv needs to be at the end of LIBS or DNS lookups break
+	AC_CHECK_LIB(resolv, res_query, [ LIBS="$LIBS -lresolv" ])
+	# /usr/ucblib/libucb.a no longer needed on ReliantUNIX
+	# Attention: always take care to bind libsocket and libnsl before libc,
+	# otherwise you will find lots of "SIOCGPGRP errno 22" on syslog
+	;;
+# UnixWare 1.x, UnixWare 2.x, and others based on code from Univel.
+*-*-sysv4.2*)
+	;;
+# UnixWare 7.x, OpenUNIX 8
+*-*-sysv5*)
+	;;
+*-*-sysv*)
+	;;
+# SCO UNIX and OEM versions of SCO UNIX
+*-*-sco3.2v4*)
+	AC_MSG_ERROR("This Platform is no longer supported.")
+	;;
+# SCO OpenServer 5.x
+*-*-sco3.2v5*)
+	if test -z "$GCC"; then
+		CFLAGS="$CFLAGS -belf"
+	fi
+	LIBS="$LIBS -lprot -lx -ltinfo -lm"
+	no_dev_ptmx=1
+	MANTYPE=man
+	TEST_SHELL=ksh
+	;;
+*-*-unicosmk*)
+	LDFLAGS="$LDFLAGS"
+	LIBS="$LIBS -lgen -lrsc -lshare -luex -lacm"
+	MANTYPE=cat
+	;;
+*-*-unicosmp*)
+	LDFLAGS="$LDFLAGS"
+	LIBS="$LIBS -lgen -lacid -ldb"
+	MANTYPE=cat
+	;;
+*-*-unicos*)
+	LDFLAGS="$LDFLAGS -Wl,-Dmsglevel=334:fatal"
+	LIBS="$LIBS -lgen -lrsc -lshare -luex -lacm"
+	MANTYPE=cat
+	;;
+*-dec-osf*)
+	AC_DEFINE(BROKEN_GETADDRINFO)
+	;;
+*-*-nto-qnx*)
+	;;
+*-*-ultrix*)
+	AC_DEFINE(BROKEN_GETGROUPS, 1, [getgroups(0,NULL) will return -1])
+	AC_DEFINE(HAVE_SYS_SYSLOG_H, 1, [Force use of sys/syslog.h on Ultrix])
+	;;
+*-*-lynxos)
+        CFLAGS="$CFLAGS -D__NO_INCLUDE_WARN__"
+        ;;
+esac
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_HEADER_STDBOOL
+AC_TYPE_UID_T
+
+AC_CACHE_CHECK([for ssize_t], ac_cv_have_ssize_t, [
+	AC_TRY_COMPILE(
+		[
+#include <sys/types.h>
+		],
+		[ ssize_t foo; foo = 1235; ],
+		[ ac_cv_have_ssize_t="yes" ],
+		[ ac_cv_have_ssize_t="no" ]
+	)
+])
+if test "x$ac_cv_have_ssize_t" = "xyes" ; then
+	AC_DEFINE(HAVE_SSIZE_T, 1, [define if you have ssize_t data type])
+fi
+
+# Checks for library functions.
+AC_FUNC_CHOWN
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_FORK
+AC_PROG_GCC_TRADITIONAL
+AC_FUNC_MALLOC
+AC_FUNC_MEMCMP
+AC_FUNC_REALLOC
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_SETPGRP
+AC_TYPE_SIGNAL
+AC_FUNC_STAT
+AC_FUNC_VPRINTF
+AC_FUNC_WAIT3
+AC_CHECK_FUNCS([ \
+	alarm \
+	arc4random \
+	asprintf \
+	dup2 \
+	endpwent \
+	freeaddrinfo \
+	ftruncate \
+	inet_ntoa \
+	getaddrinfo \
+	gethostbyaddr \
+	gethostbyname \
+	gethostname \
+	getnameinfo \
+	getopt \
+	getpeereid \
+	memset \
+	mkdir \
+	select \
+	setlocale \
+	setproctitle \
+	setsid \
+	socket \
+	snprintf \
+	strchr \
+	strdup \
+	strerror \
+	strlcat \
+	strlcpy \
+	strrchr \
+	strstr \
+	strtol \
+	vsnprintf \
+	vasprintf \
+])
+
+AC_CHECK_LIBM
+AC_SUBST(LIBM)
+
+# IRIX has a const char return value for gai_strerror()
+AC_CHECK_FUNCS(gai_strerror,[
+	AC_DEFINE(HAVE_GAI_STRERROR)
+	AC_TRY_COMPILE([
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+
+const char *gai_strerror(int);],[
+char *str;
+
+str = gai_strerror(0);],[
+		AC_DEFINE(HAVE_CONST_GAI_STRERROR_PROTO, 1,
+		[Define if gai_strerror() returns const char *])])])
+
+AC_CACHE_CHECK([for struct sockaddr_storage], ac_cv_have_struct_sockaddr_storage, [
+	AC_TRY_COMPILE(
+		[
+#include <sys/types.h>
+#include <sys/socket.h>
+		],
+		[ struct sockaddr_storage s; ],
+		[ ac_cv_have_struct_sockaddr_storage="yes" ],
+		[ ac_cv_have_struct_sockaddr_storage="no" ]
+	)
+])
+if test "x$ac_cv_have_struct_sockaddr_storage" = "xyes" ; then
+	AC_DEFINE(HAVE_STRUCT_SOCKADDR_STORAGE, 1,
+		[define if you have struct sockaddr_storage data type])
+fi
+
+AC_CACHE_CHECK([for struct sockaddr_in6], ac_cv_have_struct_sockaddr_in6, [
+	AC_TRY_COMPILE(
+		[
+#include <sys/types.h>
+#include <netinet/in.h>
+		],
+		[ struct sockaddr_in6 s; s.sin6_family = 0; ],
+		[ ac_cv_have_struct_sockaddr_in6="yes" ],
+		[ ac_cv_have_struct_sockaddr_in6="no" ]
+	)
+])
+if test "x$ac_cv_have_struct_sockaddr_in6" = "xyes" ; then
+	AC_DEFINE(HAVE_STRUCT_SOCKADDR_IN6, 1,
+		[define if you have struct sockaddr_in6 data type])
+fi
+
+AC_CACHE_CHECK([for struct in6_addr], ac_cv_have_struct_in6_addr, [
+	AC_TRY_COMPILE(
+		[
+#include <sys/types.h>
+#include <netinet/in.h>
+		],
+		[ struct in6_addr s; s.s6_addr[0] = 0; ],
+		[ ac_cv_have_struct_in6_addr="yes" ],
+		[ ac_cv_have_struct_in6_addr="no" ]
+	)
+])
+if test "x$ac_cv_have_struct_in6_addr" = "xyes" ; then
+	AC_DEFINE(HAVE_STRUCT_IN6_ADDR, 1,
+		[define if you have struct in6_addr data type])
+fi
+
+AC_CACHE_CHECK([for struct addrinfo], ac_cv_have_struct_addrinfo, [
+	AC_TRY_COMPILE(
+		[
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+		],
+		[ struct addrinfo s; s.ai_flags = AI_PASSIVE; ],
+		[ ac_cv_have_struct_addrinfo="yes" ],
+		[ ac_cv_have_struct_addrinfo="no" ]
+	)
+])
+if test "x$ac_cv_have_struct_addrinfo" = "xyes" ; then
+	AC_DEFINE(HAVE_STRUCT_ADDRINFO, 1,
+		[define if you have struct addrinfo data type])
+fi
+
+
+# Check for broken snprintf
+if test "x$ac_cv_func_snprintf" = "xyes" ; then
+	AC_MSG_CHECKING([whether snprintf correctly terminates long strings])
+	AC_RUN_IFELSE(
+		[AC_LANG_SOURCE([[
+#include <stdio.h>
+int main(void){char b[5];snprintf(b,5,"123456789");exit(b[4]!='\0');}
+		]])],
+		[AC_MSG_RESULT(yes)],
+		[
+			AC_MSG_RESULT(no)
+			AC_DEFINE(BROKEN_SNPRINTF, 1,
+				[Define if your snprintf is busted])
+			AC_MSG_WARN([****** Your snprintf() function is broken, complain to your vendor])
+		],
+		[ AC_MSG_WARN([cross compiling: Assuming working snprintf()]) ]
+	)
+fi
+
+# If we don't have a working asprintf, then we strongly depend on vsnprintf
+# returning the right thing on overflow: the number of characters it tried to
+# create (as per SUSv3)
+if test "x$ac_cv_func_asprintf" != "xyes" && \
+   test "x$ac_cv_func_vsnprintf" = "xyes" ; then
+	AC_MSG_CHECKING([whether vsnprintf returns correct values on overflow])
+	AC_RUN_IFELSE(
+		[AC_LANG_SOURCE([[
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdarg.h>
+
+int x_snprintf(char *str,size_t count,const char *fmt,...)
+{
+	size_t ret; va_list ap;
+	va_start(ap, fmt); ret = vsnprintf(str, count, fmt, ap); va_end(ap);
+	return ret;
+}
+int main(void)
+{
+	char x[1];
+	exit(x_snprintf(x, 1, "%s %d", "hello", 12345) == 11 ? 0 : 1);
+} ]])],
+		[AC_MSG_RESULT(yes)],
+		[
+			AC_MSG_RESULT(no)
+			AC_DEFINE(BROKEN_SNPRINTF, 1,
+				[Define if your snprintf is busted])
+			AC_MSG_WARN([****** Your vsnprintf() function is broken, complain to your vendor])
+		],
+		[ AC_MSG_WARN([cross compiling: Assuming working vsnprintf()]) ]
+	)
+fi
+
+AC_CACHE_CHECK([whether va_copy exists], ac_cv_have_va_copy, [
+	AC_TRY_LINK(
+		[#include <stdarg.h>
+		 va_list x,y;],
+	    	[va_copy(x,y);],
+		[ ac_cv_have_va_copy="yes" ],
+		[ ac_cv_have_va_copy="no" ]
+	)
+])
+if test "x$ac_cv_have_va_copy" = "xyes" ; then
+	AC_DEFINE(HAVE_VA_COPY, 1, [Define if va_copy exists])
+fi
+
+AC_CACHE_CHECK([whether __va_copy exists], ac_cv_have___va_copy, [
+	AC_TRY_LINK(
+		[#include <stdarg.h>
+		 va_list x,y;],
+	    	[__va_copy(x,y);],
+		[ ac_cv_have___va_copy="yes" ],
+		[ ac_cv_have___va_copy="no" ]
+	)
+])
+if test "x$ac_cv_have___va_copy" = "xyes" ; then
+	AC_DEFINE(HAVE___VA_COPY, 1, [Define if __va_copy exists])
+fi
+
+AC_CACHE_CHECK([whether getopt has optreset support],
+		ac_cv_have_getopt_optreset, [
+	AC_TRY_LINK(
+		[
+#include <getopt.h>
+		],
+		[ extern int optreset; optreset = 0; ],
+		[ ac_cv_have_getopt_optreset="yes" ],
+		[ ac_cv_have_getopt_optreset="no" ]
+	)
+])
+if test "x$ac_cv_have_getopt_optreset" = "xyes" ; then
+	AC_DEFINE(HAVE_GETOPT_OPTRESET, 1,
+		[Define if your getopt(3) defines and uses optreset])
+fi
+
+AC_CHECK_FUNCS(setresuid, [
+	dnl Some platorms have setresuid that isn't implemented, test for this
+	AC_MSG_CHECKING(if setresuid seems to work)
+	AC_RUN_IFELSE(
+		[AC_LANG_SOURCE([[
+#include <stdlib.h>
+#include <errno.h>
+int main(){errno=0; setresuid(0,0,0); if (errno==ENOSYS) exit(1); else exit(0);}
+		]])],
+		[AC_MSG_RESULT(yes)],
+		[AC_DEFINE(BROKEN_SETRESUID, 1,
+			[Define if your setresuid() is broken])
+		 AC_MSG_RESULT(not implemented)],
+		[AC_MSG_WARN([cross compiling: not checking setresuid])]
+	)
+])
+
+AC_CHECK_FUNCS(setresgid, [
+	dnl Some platorms have setresgid that isn't implemented, test for this
+	AC_MSG_CHECKING(if setresgid seems to work)
+	AC_RUN_IFELSE(
+		[AC_LANG_SOURCE([[
+#include <stdlib.h>
+#include <errno.h>
+int main(){errno=0; setresgid(0,0,0); if (errno==ENOSYS) exit(1); else exit(0);}
+		]])],
+		[AC_MSG_RESULT(yes)],
+		[AC_DEFINE(BROKEN_SETRESGID, 1,
+			[Define if your setresgid() is broken])
+		 AC_MSG_RESULT(not implemented)],
+		[AC_MSG_WARN([cross compiling: not checking setresuid])]
+	)
+])
+
+AC_CHECK_FUNC(daemon,
+	[AC_DEFINE(HAVE_DAEMON, 1, [Define if your libraries define daemon()])],
+	[AC_CHECK_LIB(bsd, daemon,
+		[LIBS="$LIBS -lbsd"; AC_DEFINE(HAVE_DAEMON)])]
+)
+
+# On systems where [v]snprintf is broken, but is declared in stdio,
+# check that the fmt argument is const char * or just char *.
+# This is only useful for when BROKEN_SNPRINTF
+AC_MSG_CHECKING([whether snprintf can declare const char *fmt])
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([[#include <stdio.h>
+	   int snprintf(char *a, size_t b, const char *c, ...) { return 0; }
+	   int main(void) { snprintf(0, 0, 0); }
+    ]])],
+   [AC_MSG_RESULT(yes)
+    AC_DEFINE(SNPRINTF_CONST, [const],
+              [Define as const if snprintf() can declare const char *fmt])],
+   [AC_MSG_RESULT(no)
+    AC_DEFINE(SNPRINTF_CONST, [/* not const */])])
+
+AC_ARG_WITH(libwrap,[  --with-libwrap          use tcp wrappers [default=no]], , wrap_ok=no)
+
+# Check for missing getpeereid (or equiv) support
+NO_PEERCHECK=""
+if test "x$ac_cv_func_getpeereid" != "xyes" ; then
+	AC_MSG_CHECKING([whether system supports SO_PEERCRED getsockopt])
+	AC_TRY_COMPILE(
+		[#include <sys/types.h>
+		 #include <sys/socket.h>],
+		[int i = SO_PEERCRED;],
+		[ AC_MSG_RESULT(yes)
+		  AC_DEFINE(HAVE_SO_PEERCRED, 1, [Have PEERCRED socket option])
+		],
+		[AC_MSG_RESULT(no)
+		NO_PEERCHECK=1]
+        )
+fi
+
+if test ! -z "$NO_PEERCHECK" ; then
+	echo "WARNING: the operating system that you are using does not "
+	echo "appear to support either the getpeereid() API nor the "
+	echo "SO_PEERCRED getsockopt() option. These facilities are used to "
+	echo "enforce security checks to prevent unauthorised connections to "
+	echo "sj3serv. Their absence increases the risk that a malicious "
+	echo "user can connect to your agent. "
+	echo ""
+fi
+
+if test "x$ac_cv_func_getaddrinfo" = "xyes" && \
+    test "x$check_for_hpux_broken_getaddrinfo" = "x1"; then
+	AC_MSG_CHECKING(if getaddrinfo seems to work)
+	AC_RUN_IFELSE(
+		[AC_LANG_SOURCE([[
+#include <stdio.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <errno.h>
+#include <netinet/in.h>
+
+#define TEST_PORT "2222"
+
+int
+main(void)
+{
+	int err, sock;
+	struct addrinfo *gai_ai, *ai, hints;
+	char ntop[NI_MAXHOST], strport[NI_MAXSERV], *name = NULL;
+
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = PF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = AI_PASSIVE;
+
+	err = getaddrinfo(name, TEST_PORT, &hints, &gai_ai);
+	if (err != 0) {
+		fprintf(stderr, "getaddrinfo failed (%s)", gai_strerror(err));
+		exit(1);
+	}
+
+	for (ai = gai_ai; ai != NULL; ai = ai->ai_next) {
+		if (ai->ai_family != AF_INET6)
+			continue;
+
+		err = getnameinfo(ai->ai_addr, ai->ai_addrlen, ntop,
+		    sizeof(ntop), strport, sizeof(strport),
+		    NI_NUMERICHOST|NI_NUMERICSERV);
+
+		if (err != 0) {
+			if (err == EAI_SYSTEM)
+				perror("getnameinfo EAI_SYSTEM");
+			else
+				fprintf(stderr, "getnameinfo failed: %s\n",
+				    gai_strerror(err));
+			exit(2);
+		}
+
+		sock = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
+		if (sock < 0)
+			perror("socket");
+		if (bind(sock, ai->ai_addr, ai->ai_addrlen) < 0) {
+			if (errno == EBADF)
+				exit(3);
+		}
+	}
+	exit(0);
+}
+		]])],
+		[
+			AC_MSG_RESULT(yes)
+		],
+		[
+			AC_MSG_RESULT(no)
+			AC_DEFINE(BROKEN_GETADDRINFO)
+		],
+		[
+			AC_MSG_RESULT(cross-compiling, assuming yes)
+		]
+	)
+fi
+
+AC_MSG_CHECKING(enable server for sj3)
+AC_ARG_ENABLE(server,
+  AC_HELP_STRING([--enable-server],
+                 [install server @<:@default=yes@:>@]),
+  [],
+  [
+    enable_server=yes
+  ])
+AM_CONDITIONAL(BUILDABLE_SJ3SERV, test x$enable_server = xyes)
+AC_MSG_RESULT($enable_server)
+
+AC_MSG_CHECKING(enable client for sj3)
+AC_ARG_ENABLE(client,
+  AC_HELP_STRING([--enable-client],
+                 [install client @<:@default=yes@:>@]),
+  [],
+  [
+    enable_client=yes
+  ])
+AM_CONDITIONAL(BUILDABLE_SJ3CLIENT, test x$enable_client = xyes)
+AC_MSG_RESULT($enable_client)
+
+AC_MSG_CHECKING(enable dictionary for sj3)
+AC_ARG_ENABLE(dict,
+  AC_HELP_STRING([--enable-dict],
+                 [install dictionary @<:@default=yes@:>@]),
+  [],
+  [
+     if test ! x$enable_server = xyes; then
+       AC_MSG_ERROR([*** must be set --enable-server])
+     fi
+     enable_dict=yes
+  ])
+AM_CONDITIONAL(BUILDABLE_SJ3DICT, test x$enable_dict = xyes)
+AC_MSG_RESULT($enable_dict)
+
+AC_MSG_CHECKING(enable demo for sj3)
+AC_ARG_ENABLE(demo,
+  AC_HELP_STRING([--enable-demo],
+                 [install demo @<:@default=yes@:>@]),
+  [],
+  [
+     if test ! x$enable_client = xyes; then
+       AC_MSG_ERROR([*** must be set --enable-client])
+     fi
+     enable_demo=yes
+  ])
+AM_CONDITIONAL(BUILDABLE_SJ3DEMO, test x$enable_demo = xyes)
+AC_MSG_RESULT($enable_demo)
+
+WRAP_LIB=
+if test "x$with_libwrap" = "xyes"; then
+   sj3_save_LIBS="$LIBS"
+   LIBS="$LIBS -lwrap"
+
+   AC_MSG_CHECKING([for tcp_wrapper library and headers])
+
+   wrap_ok=no
+   AC_TRY_LINK(
+[#include <stdio.h>
+#include <tcpd.h>
+#include <syslog.h>
+int allow_severity = LOG_INFO;
+int deny_severity = LOG_WARNING;],
+[struct request_info *request; return hosts_access (request);],
+      [AC_DEFINE(USE_LIBWRAP, 1, [Define if you have the tcp_wrapper library.])
+       WRAP_LIB="-lwrap"
+       wrap_ok=yes],
+      [LIBS="$LIBS -lnsl"
+       AC_TRY_LINK(
+[#include <stdio.h>
+#include <tcpd.h>
+#include <syslog.h>
+int allow_severity = LOG_INFO;
+int deny_severity = LOG_WARNING;],
+[struct request_info *request; return hosts_access (request);],
+
+         [AC_DEFINE(USE_LIBWRAP, 1, [Define if you have the tcp_wrapper library.])
+          WRAP_LIB="-lwrap -lnsl"
+          wrap_ok=yes])])
+
+   AC_MSG_RESULT($wrap_ok)
+
+   LIBS="$sj3_save_LIBS"
+fi
+AC_SUBST(WRAP_LIB)
+
+AC_ARG_WITH(external-lua,
+  AS_HELP_STRING([--with-external-lua], [Use external lua library,
+                                         @<:@default=no@:>@]),
+  [
+    if test "x$with_external_lua" = "xyes"; then
+      PKG_CHECK_MODULES(LUA, lua >= 5.1, with_internal_lua="no")
+    else
+      with_internal_lua=yes
+    fi
+  ],
+  [
+      with_internal_lua=yes
+  ]
+)
+AM_CONDITIONAL(SJ3_INTERNAL_LUA, test x$with_internal_lua = xyes)
+
+AC_ARG_WITH(user,
+[  --with-user=uid         name of the sj3 user (default=_sj3)],
+sj3_user="$withval", sj3_user="_sj3")
+
+SJ3OWNER=$sj3_user
+AC_DEFINE_UNQUOTED(SJ3OWNER, "$sj3_user",[name of the sj3 user])
+AC_SUBST(SJ3OWNER)
+
+AC_ARG_WITH(group,
+[  --with-group=gid        name of the sj3 group (default=_sj3)],
+sj3_group="$withval", sj3_group="_sj3")
+
+SJ3GROUP=$sj3_group
+AC_DEFINE_UNQUOTED(SJ3GROUP, "$sj3_group",[name of the sj3 group])
+AC_SUBST(SJ3GROUP)
+
+dnl configure config directory
+sj3sysconf_dir=`echo $sysconfdir | grep prefix`
+
+if test -n "$sj3sysconf_dir"; then
+   if test "$prefix" = "NONE"
+   then
+	sj3sysconf_dir="$ac_default_prefix/etc/sj3"
+   else
+	sj3sysconf_dir="$prefix/etc/sj3"
+   fi
+else
+	sj3sysconf_dir="$sysconfdir/sj3"
+fi
+
+SJ3SYSCONFDIR=$sj3sysconf_dir
+AC_SUBST(SJ3SYSCONFDIR)
+AC_DEFINE_UNQUOTED(SJ3CONFDIR, "$sj3sysconf_dir", [server config dir])
+AC_DEFINE_UNQUOTED(RUNCMDFILE, "$sj3sysconf_dir/sj3serv.lua", [server config file])
+
+dnl configure config directory
+sj3var_dir=`echo $localstatedir | grep prefix`
+
+if test -n "$sj3var_dir"; then
+    if test "$prefix" = "NONE"
+    then
+	sj3var_dir="$ac_default_prefix/var"
+    else
+	sj3var_dir="$prefix/var"
+    fi
+else
+	sj3var_dir="$localstatedir"
+fi
+
+SJ3VARDIR="$sj3var_dir"
+AC_SUBST(SJ3VARDIR)
+AC_DEFINE_UNQUOTED(CHROOTDIR, "$sj3var_dir/spool/sj3", [chrooted dir])
+AC_DEFINE_UNQUOTED(SOCKETNAME, "$sj3var_dir/run/sj3serv.socket", [socket file])
+AC_DEFINE_UNQUOTED(PIDFILE, "$sj3var_dir/run/sj3serv.pid", [pid file])
+
+SJ3DICTDIR="$sj3var_dir/spool/sj3"
+AC_SUBST(SJ3DICTDIR)
+AC_DEFINE_UNQUOTED(DICTROOTDIR, "$SJ3DICTDIR", [dict root dir])
+
+AH_BOTTOM([/* Include os specific header. */
+#include "sj3compat.h"])
+
+AC_CONFIG_FILES([
+	  Makefile
+	  sj3.spec
+	  include/Makefile
+	  include/sj3common/Makefile
+	  include/sj3compat/Makefile
+	  include/sj3core/Makefile
+	  include/sj3lib/Makefile
+	  include/sj3rkcv/Makefile
+	  dict/Makefile
+	  doc/Makefile
+	  doc/man/Makefile
+	  doc/doc/Makefile
+	  lib/Makefile
+	  lib/sj3compat/Makefile
+	  lib/sj3core/Makefile
+	  lib/sj3lib/Makefile
+	  lib/lua/Makefile
+  	  lib/lua/doc/Makefile
+	  lib/lua/etc/Makefile
+	  lib/lua/src/Makefile
+	  lib/lua/test/Makefile
+	  lib/sj3lib/sj3lib.pc
+	  lib/sj3rkcv/Makefile
+	  src/Makefile
+	  src/sj3demo/Makefile
+	  src/sj3dic/Makefile
+	  src/sj3mkdic/Makefile
+	  src/sj3serv/Makefile
+	  src/sj3stat/Makefile
+])
+
+AC_OUTPUT

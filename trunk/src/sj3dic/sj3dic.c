@@ -1,0 +1,333 @@
+/*
+ * Copyright (c) 1991-1994  Sony Corporation
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL SONY CORPORATION BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * Except as contained in this notice, the name of Sony Corporation
+ * shall not be used in advertising or otherwise to promote the sale, use
+ * or other dealings in this Software without prior written authorization
+ * from Sony Corporation.
+ *
+ */
+
+/*
+ * $SonyRCSfile: sj3dic.c,v $  
+ * $SonyRevision: 1.2 $ 
+ * $SonyDate: 1996/02/15 02:22:58 $
+ */
+
+#include <config.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <pwd.h>
+#include <locale.h>
+#include <unistd.h>
+#include "sj3dic.h"
+#include "sjtool.h"
+#include "sj3lib.h"
+
+static void sj3dic_open_error(int);
+static void sj3dic_close_error(int);
+
+
+#ifdef __sony_news
+int sj3dic_sys_code = _sys_code;
+#else
+int sj3dic_sys_code = SYS_EUC;
+#endif
+
+#ifndef	lint
+static	char	rcsid_sony[] = "$Header: /export/work/contrib/sj3/sj3dic/RCS/sj3dic.c,v 1.11 1994/06/03 07:41:59 notanaka Exp $ SONY;";
+#endif
+
+static	struct	option	{
+	char	*str;
+	int	code;
+} options[] = {
+	{ "text",    EXEC_TEXT },
+	{ "dict",    EXEC_DICT },
+	{ "init",    EXEC_INIT },
+	{ "verbose", EXEC_VERBOSE },
+	{ "host",    EXEC_SERVER },
+	{ "server",  EXEC_SERVER },
+	{ "force",   EXEC_FORCE },
+	{ 0, 0 }
+};
+
+char	prog_name[LONGLENGTH];
+char	home_dir[LONGLENGTH];
+char	user_name[LONGLENGTH];
+char	term_name[LONGLENGTH];
+char	serv_name[LONGLENGTH];
+char	file_name[LONGLENGTH];
+char	dict_name[LONGLENGTH];
+int	verbose_flag = 0;
+int	init_flag = 0;
+int	force_flag = 0;
+
+int
+main(int argc, char **argv)
+{
+	int	err;
+	int	mode;
+
+	if (!init_code()) {
+		fprintf(stderr, "Can't excute on this locale\n");
+		exit(1);
+	}
+	init_env();
+	mode = parsearg(argc, argv);
+	setsjserv(getenv("SJ3SERV"));
+	getsjrc();
+	make_dicname();
+
+	if (err = sj3_open(serv_name, user_name))
+		sj3dic_open_error(err);
+
+	switch (mode) {
+	case EXEC_TEXT:
+		dictdisp(file_name);
+		break;
+
+	case EXEC_DICT:
+		dictmake(file_name);
+		break;
+	default:
+		break;
+	}
+
+	if ((err = sj3_close()) != TRUE)
+		sj3dic_close_error(err);
+	return 0;
+}
+
+void
+init_env()
+{
+	char	*un, *hp, *tn;
+	struct	passwd	*pwd;
+
+	prog_name[0] =
+	home_dir[0]  =
+	user_name[0] =
+	term_name[0] =
+	serv_name[0] =
+	file_name[0] =
+	dict_name[0] = '\0';
+
+	un = getlogin();
+	hp = getenv("HOME");
+
+	setpwent();
+	pwd = (un == NULL || *un == '\0') ? getpwuid(getuid()) : getpwnam(un);
+	if (pwd != NULL) {
+		strlcpy(user_name, pwd -> pw_name, sizeof(user_name));
+		if (hp == NULL)
+			hp = pwd -> pw_dir;
+		endpwent();
+	}
+	if (hp != NULL)
+		strlcpy(home_dir, hp, sizeof(home_dir));
+
+	if ((tn = getenv("TERM")) == NULL) {
+		fprintf(stderr, "Can't getenv TERM\n\r");
+		perror("getenv");
+		exit(1);
+	}
+	strlcpy(term_name, tn, sizeof(term_name));
+}
+
+void
+usage(int ret)
+{
+	fprintf(stderr,
+		"Usage: %s -{text|dict} [-H host_name] [file_name]\n",
+		prog_name);
+	exit(ret);
+}
+
+int
+parsearg(int argc, char *argv[])
+{
+	int	errflg = 0;
+	int	i, j;
+	char	*p, *q;
+	struct	option	*opt;
+	int	cmd;
+	int	mode = 0;
+	char	tmp[LONGLENGTH];
+
+	strlcpy(prog_name, (p = strrchr(argv[0], '/')) ? p + 1 : argv[0], sizeof(prog_name));
+
+	for (i = 1 ; i < argc ; i++) {
+		if (*argv[i] == '-') {
+			for (p = argv[i]+1, q = tmp ; *p ; p++)
+				*q++ = isupper(*p) ? tolower(*p) : *p;
+			*q = 0;
+			j = strlen(tmp);
+			cmd = 0;
+			for (opt = options ; opt -> code ; opt++) {
+				if (strncmp(opt -> str, tmp, j))
+					continue;
+				else if (cmd) {
+					errflg++; break;
+				}
+				else
+					cmd = opt -> code;
+			}
+			if (errflg)
+				break;
+			if (cmd == 0) {
+				errflg++;
+				break;
+			}
+			switch (cmd) {
+			case EXEC_TEXT:
+			case EXEC_DICT:
+				if (mode)
+					errflg++;
+				else
+					mode = cmd;
+				break;
+			case EXEC_INIT:
+				init_flag++;
+				break;
+			case EXEC_VERBOSE:
+				verbose_flag++;
+				break;
+			case EXEC_SERVER:
+				if (++i >= argc) {
+					errflg++;
+					break;
+				}
+				setsjserv(argv[i]);
+				break;
+			case EXEC_FORCE:
+				force_flag++;
+				break;
+			default:
+				errflg++;
+				break;
+			}
+		}
+		else if (file_name[0]) {
+			errflg++;
+			break;
+		}
+		else
+			strlcpy(file_name, argv[i], sizeof(file_name));
+	}
+
+	if (errflg || (mode == 0))
+		usage(1);
+
+	return mode;
+}
+
+void
+make_dicname()
+{
+	if (dict_name[0] != '\0')
+		return;
+
+	snprintf(dict_name, sizeof(dict_name), "%s/sj2usr.dic", home_dir);
+}
+
+void
+setdicname(char *dictname)
+{
+	if (dict_name[0] != '\0' || dictname == NULL)
+		return;
+	strlcpy(dict_name, dictname, sizeof(dict_name));
+}
+
+void
+setsjserv(char *hostname)
+{
+	if (serv_name[0] != '\0' || hostname == NULL)
+		return;
+	strlcpy(serv_name, hostname, sizeof(serv_name));
+}
+
+struct	errlist	{
+	int	code;
+	char	*msg;
+	int	flg;
+};
+
+static void
+sj3dic_error_and(int err, struct errlist	*list)
+{
+	int	flag = 0;
+
+	while (list -> code) {
+		if (err & list -> code) {
+			error_out(list -> msg);
+			err &= ~(list -> code);
+			if (list -> flg)
+				flag++;
+		}
+		list++;
+	}
+	if (flag)
+		exit(1);
+}
+
+static void
+sj3dic_open_error(int err)
+{
+	static struct errlist err_msg[] = {
+		{ SJ3_SERVER_DEAD, "\245\265\241\274\245\320\244\254\273\340\244\363\244\307\244\244\244\336\244\271", 1 },
+		{ SJ3_CONNECT_ERROR, "\245\265\241\274\245\320\244\310\300\334\302\263\244\307\244\255\244\336\244\273\244\363\244\307\244\267\244\277", 1 },
+		{ SJ3_ALREADY_CONNECTED, "\245\265\241\274\245\320\244\310\300\334\302\263\272\321\244\307\244\271", 1 },
+		{ SJ3_CANNOT_OPEN_MDICT, "\245\341\245\244\245\363\274\255\275\361\244\254\245\252\241\274\245\327\245\363\244\307\244\255\244\336\244\273\244\363", 0 },
+		{ SJ3_CANNOT_OPEN_UDICT, "\245\346\241\274\245\266\274\255\275\361\244\254\245\252\241\274\245\327\245\363\244\307\244\255\244\336\244\273\244\363", 1 },
+		{ SJ3_CANNOT_OPEN_STUDY, "\263\330\275\254\245\325\245\241\245\244\245\353\244\254\245\252\241\274\245\327\245\363\244\307\244\255\244\336\244\273\244\363", 0 },
+		{ SJ3_CANNOT_MAKE_UDIR, "\245\346\241\274\245\266\241\274\245\307\245\243\245\354\245\257\245\310\245\352\244\254\272\356\300\256\244\307\244\255\244\336\244\273\244\363", 1 },
+		{ SJ3_CANNOT_MAKE_UDICT, "\245\346\241\274\245\266\274\255\275\361\244\254\272\356\300\256\244\307\244\255\244\336\244\273\244\363", 1 },
+		{ SJ3_CANNOT_MAKE_STUDY, "\263\330\275\254\245\325\245\241\245\244\245\353\244\254\272\356\300\256\244\307\244\255\244\336\244\273\244\363", 0 },
+		{ -1, "\245\250\245\351\241\274", 1 },
+		{ 0, 0, 0 }
+	};
+
+	sj3dic_error_and(err, err_msg);
+}
+
+static void
+sj3dic_close_error(int err)
+{
+	static struct errlist err_msg[] = {
+		{ SJ3_SERVER_DEAD, "\245\265\241\274\245\320\241\274\244\254\273\340\244\363\244\307\244\244\244\336\244\271", 1 },
+		{ SJ3_DISCONNECT_ERROR, "\300\332\244\352\312\374\244\267\244\307\245\250\245\351\241\274\244\254\244\242\244\352\244\336\244\267\244\277", 1 },
+		{ SJ3_NOT_CONNECTED, "\245\265\241\274\245\320\244\310\300\334\302\263\244\265\244\354\244\306\244\244\244\336\244\273\244\363", 1 },
+		{ SJ3_NOT_OPENED_MDICT, "\245\341\245\244\245\363\274\255\275\361\244\317\245\252\241\274\245\327\245\363\244\265\244\354\244\306\244\244\244\336\244\273\244\363", 0 },
+		{ SJ3_NOT_OPENED_UDICT, "\245\346\241\274\245\266\274\255\275\361\244\317\245\252\241\274\245\327\245\363\244\265\244\354\244\306\244\244\244\336\244\273\244\363", 1 },
+		{ SJ3_NOT_OPENED_STUDY, "\263\330\275\254\245\325\245\241\245\244\245\353\244\317\245\252\241\274\245\327\245\363\244\265\244\354\244\306\244\244\244\336\244\273\244\363", 0 },
+		{ SJ3_CLOSE_MDICT_ERROR, "\245\341\245\244\245\363\274\255\275\361\244\254\245\257\245\355\241\274\245\272\244\307\244\255\244\336\244\273\244\363", 0 },
+		{ SJ3_CLOSE_UDICT_ERROR, "\245\346\241\274\245\266\274\255\275\361\244\254\245\257\245\355\241\274\245\272\244\307\244\255\244\336\244\273\244\363", 1 },
+		{ SJ3_CLOSE_STUDY_ERROR, "\263\330\275\254\245\325\245\241\245\244\245\353\244\254\245\257\245\355\241\274\245\272\244\307\244\255\244\336\244\273\244\363", 0 },
+		{ -1, "\245\250\245\351\241\274", 1 },
+		{ 0, 0, 0 }
+	};
+
+	sj3dic_error_and(err, err_msg);
+}
