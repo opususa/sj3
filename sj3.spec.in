@@ -1,0 +1,31 @@
+Summary: SJ3 Kana Kanji Server
+Name: sj3-server
+Version: @VERSION@
+Release: 1
+URL: http://quasiquote.org/
+Source0: %{name}-%{version}.tar.gz
+License: BSD
+Group: System Environment/Libraries
+BuildRoot: %{_tmppath}/%{name}-root
+
+%description
+
+%prep
+%setup -q
+
+%build
+%configure
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+%makeinstall
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%doc AUTHORS ChangeLog* COPYING NEWS README doc
+%{_bindir}/sj3*
+%{_sbin}/sj3serv

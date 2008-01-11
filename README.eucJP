@@ -1,0 +1,72 @@
+・SJ3 とは
+	SJ3 は、ソニー（株）で開発された日本語入力システムです。
+	SJ3 は、仮名漢字変換サーバ(sj3serv)と、
+	仮名漢字変換ライブラリ(sj3lib)で構成されています。
+
+・make の手順
+	このディレクトリにおいて以下のようにしてください。
+
+	Makefile を作成する
+	$ ./configure
+
+	make する
+	$ make
+
+	インストールする
+	# make install
+
+	この操作によりインストールされるファイルを以下に示します。
+
+	$(prefix)/var/sj3/spool/sj3/sj3main.dic
+					sj3serv が使用するメイン辞書
+	$(prefix)/sbin/sj3serv		仮名漢字変換サーバ
+	$(prefix)/bin/sj3demo		デモプログラム
+	$(prefix)/bin/sj3dic		ユーザ辞書ユーティリティ
+	$(prefix)/bin/sj3mkdic		辞書生成ツール
+	$(prefix)/bin/sj3stat		sj3serv への接続状況表示ユーティリティ
+	$(prefix)/include/sj3lib.h	仮名漢字変換ライブラリのヘッダファイル
+	$(prefix)/lib/libsj3core.a	仮名漢字変換サーバのライブラリ
+	$(prefix)/lib/libsj3core.so.x.x
+	$(prefix)/lib/libsj3lib.a	仮名漢字変換クライアントのライブラリ
+	$(prefix)/lib/libsj3lib.so.x.x
+	$(prefix)/share/examples/sj3/sj3serv.lua.example
+					sj3serv の設定ファイル
+	$(prefix)/share/examples/sj3/freebsd-sj3.sh.in
+					FreeBSDの起動スクリプト
+
+・ディレクトリ構成
+	include		ヘッダファイル
+
+	lib/lua		lua
+
+	lib/sj3core	仮名漢字変換サーバのライブラリ
+
+	lib/sj3rkcv	端末用仮名漢字変換クライアントのライブラリ
+
+	lib/sj3lib	仮名漢字変換クライアントのライブラリ
+
+	dict		メイン辞書のテキストファイル
+
+	src/sj3mkdic	辞書のテキストファイルをバイナリファイルに
+			変換するツール
+
+	src/sj3serv	仮名漢字変換サーバ
+
+	src/sj3dic	ユーザ辞書ユーティリティ
+	src/sj3stat	sj3serv への接続状況表示ユーティリティ
+
+	src/sj3demo	仮名漢字変換ライブラリのデモプログラム
+
+	doc/man		オンラインマニュアル
+	doc/doc		SJ3 日本語入力ガイドとその他ドキュメント
+
+
+・テスト機種
+	PC				OpenBSD 4.2
+					FreeBSD 7.0-current
+
+・バグレポート
+	SJ3 のバグを見つけた方は以下のURLに報告していただけると助かります。
+	レポートは日本語又は英語でお願いします。
+
+		http://code.google.com/p/sj3/issues/list

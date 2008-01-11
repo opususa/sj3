@@ -1,0 +1,108 @@
+/*
+ * Copyright (c) 1991-1994  Sony Corporation
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL SONY CORPORATION BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * Except as contained in this notice, the name of Sony Corporation
+ * shall not be used in advertising or otherwise to promote the sale, use
+ * or other dealings in this Software without prior written authorization
+ * from Sony Corporation.
+ *
+ */
+
+/*
+ * $SonyRCSfile: sj3_dict_const.h,v $  
+ * $SonyRevision: 1.1 $ 
+ * $SonyDate: 1994/06/03 08:00:24 $
+ */
+
+#ifndef	SJ3_DICT_CONST_H
+#define	SJ3_DICT_CONST_H
+
+#define	MAINSEGMENTLENGTH	2048
+#define	MAININDEXLENGTH		2048
+#define	MAININDEXNUMBER		512
+
+#define	MAXYOMILENGTH		32
+#define	MAXKANJILENGTH		32
+#define	MAXHINSINUMBER		16
+#define	MAXATRNUMBER		16
+#define	MAXJOSINUMBER		16
+
+#define	MAXKNJASKNUMBER		16
+#define	MAXYOMIASKNUMBER	16
+
+#define	DOUONBLKSIZENUMBER	3
+
+#define	DOUONBLKTERM		0xff
+#define	HINSIBLKTERM		0xff
+
+#define NORMALKANJIMASK         0x7f
+#define SS3KANJI                0x0080
+#define	ZENHIRAASSYUKU		0x80
+#define	OFFSETASSYUKU		0x90
+#define	ZENKATAASSYUKU		0xa0
+#define	AIATTRIBUTE		0xb0
+#define	KANJIASSYUKU		0xc0
+#define	LEADINGHANKAKU		0xd0
+#define	KANJISTREND		0x00
+#define ISASSYUKU               0x80
+#define ASSUKUUSE2BYTE          0x90
+#define KNJASSYUKUMASK          0x0f
+#define KANJICODEMASK           0x0f
+#define KANJIMODEMASK           0xf0
+#define	ATRMSKANJIOFS		0xc0c0
+
+
+#define	MAXHINDONUMBER		2000
+#define	MAXOFFSETNUMBER		1000
+
+#define	ILLEGALFORMAT		"\245\325\245\251\241\274\245\336\245\303\245\310\244\254\260\333\276\357\244\307\244\271"
+#define	TOOLONGYOMI		"\306\311\244\337\312\270\273\372\316\363\244\254\304\271\244\271\244\256\244\336\244\271"
+#define	TOOLONGKANJI		"\264\301\273\372\312\270\273\372\316\363\244\254\304\271\244\271\244\256\244\336\244\271"
+#define	TOOLONGHINSI		"\311\312\273\354\312\270\273\372\316\363\244\254\304\271\244\271\244\256\244\336\244\271"
+#define	TOOLONGGROUP		"\245\260\245\353\241\274\245\327\314\276\244\254\260\333\276\357\244\307\244\271"
+#define	TOOLONGJOSI		"\275\365\273\354\312\270\273\372\316\363\244\254\260\333\276\357\244\307\244\271"
+#define	BADHINSI		"\305\320\317\277\244\265\244\354\244\306\244\244\244\312\244\244\311\312\273\354\244\307\244\271"
+#define	BADGROUP		"\305\320\317\277\244\265\244\354\244\306\244\244\244\312\244\244\245\260\245\353\241\274\245\327\244\307\244\271"
+#define	BADJOSI			"\305\320\317\277\244\265\244\354\244\306\244\244\244\312\244\244\275\365\273\354\244\307\244\271"
+#define	NOYOMISTRING		"\306\311\244\337\312\270\273\372\316\363\244\254\274\350\306\300\244\307\244\255\244\336\244\273\244\363"
+#define	NOKANJISTRING		"\264\301\273\372\312\270\273\372\316\363\244\254\274\350\306\300\244\307\244\255\244\336\244\273\244\363"
+#define	TOOMANYATR		"\302\260\300\255\244\316\277\364\244\254\302\277\244\271\244\256\244\336\244\271"
+#define	TOOMANYHINSI		"\311\312\273\354\244\316\277\364\244\254\302\277\244\271\244\256\244\336\244\271"
+#define	TOOMANYJOSI		"\275\365\273\354\244\316\277\364\244\254\302\277\244\271\244\256\244\336\244\271"
+#define	NODATAINMAIN		"\245\341\245\244\245\363\274\255\275\361\244\313\302\270\272\337\244\267\244\336\244\273\244\363"
+#define	TOOMANYTARGET		"\311\312\273\354\244\362\243\261\244\304\273\330\304\352\244\267\244\306\244\257\244\300\244\265\244\244"
+
+#define	HINSITANKAN	cnvhinsi("\303\261\264\301")
+
+#define	FALSE			0
+#define	TRUE			(!FALSE)
+
+#define	DIVLIST		1
+#define	ASSYUKUREC	2
+#define	STRING		3
+#define	HINDOREC	4
+#define	OFFSETREC	5
+#define	KANJIREC	6
+#define	HINSIREC	7
+#define	DOUONREC	8
+
+#endif

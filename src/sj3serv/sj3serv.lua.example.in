@@ -1,0 +1,117 @@
+--[[ -- -*- lua -*-
+ Copyright (c) 2004 Iwata <iwata@quasiquote.org>
+
+ Permission to use, copy, modify, and distribute this software for any
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+
+ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+--]]
+
+local prefix = "%%SJ3VARDIR%%"
+
+sj3.set_server {
+   -- daemon: Boolean
+   --  set daemonize
+   daemon = true,
+
+   -- lockfile: String
+   --  pid file name
+   --  Note: this file is created after chroot
+   pidfile = "/run/sj3serv.pid",
+
+   -- max_client: Integer
+   --  client connect limit value
+   max_client = 512,
+
+   -- user: String
+   --  run as user name
+   user = "%%SJ3OWNER%%",
+
+   -- chroot: Boolean
+   --  sj3serv is chrooted or not
+   chroot = true,
+
+   -- chroot_dir: String
+   --  chrooted path
+   chroot_dir = prefix,
+
+   -- dict_dir: String
+   --  dictionary name
+   --  Note: this directory is opened after chroot
+   dict_dir = "/spool/sj3",
+}
+
+sj3.set_inet {
+   -- enable: Boolean
+   --  allow acccess via internet connection
+   enable = false,
+
+   -- family: String "unspec" or "inet4" or "inet6"
+   --  address family
+   address_family = "unspec",
+
+   -- host_name: String
+   -- listening address
+   host_name = "localhost",
+
+   -- port_name: String
+   --  binding port name, man services
+   port_name = "3086",
+}
+
+sj3.set_domain {
+   -- enable: Boolean
+   --  allow acccess via unix domain socket
+   enable = true,
+
+   -- socket_name: String
+   -- binding filename of unix domain socket
+   socket_name = prefix .. "/run/sj3serv.socket",
+}
+
+sj3.append_opendict {
+   -- dir: String
+   --  root directory of dictionaries
+   file = "sj3main.dic",
+}
+
+sj3.set_log {
+   -- file: String
+   --  output filename of log output
+   file = "/var/log/sj3",
+}
+
+sj3.set_debug {
+   -- file: String
+   --  output filename of debug out
+   file = nil,
+
+   -- debug_level: Integer
+   --  debug level
+   level = 0,
+}
+
+sj3.set_error {
+   -- file: String
+   --  output filename of error output
+   file = "/var/log/sj3_error",
+}
+
+--[[
+sj3.append_allowuser {
+   -- file: String
+   --  allowed user name
+   user = "foo",
+
+   -- file: String
+   --  allowed host name
+   hostname = "bar",
+}
+--]]
