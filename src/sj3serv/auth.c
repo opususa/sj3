@@ -46,8 +46,8 @@ exec_auth()
 	pid_t child_pid = -1;
 	struct sigaction sa;
 
-        if (socketpair(AF_LOCAL, SOCK_STREAM, PF_UNSPEC, socks) == -1) {
-                fprintf(stderr, "socketpair() failed");
+	if (socketpair(AF_LOCAL, SOCK_STREAM, PF_UNSPEC, socks) == -1) {
+		fprintf(stderr, "socketpair() failed");
 		exit(255);
 	}
 
@@ -63,11 +63,11 @@ exec_auth()
 	}
 
 	memset(&sa, 0, sizeof(sa));
-        sigemptyset(&sa.sa_mask);
-        sa.sa_flags = SA_RESTART;
-        sa.sa_handler = SIG_DFL;
-        for (i = 1; i < NSIG; i++)
-                sigaction(i, &sa, NULL);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = SIG_DFL;
+	for (i = 1; i < NSIG; i++)
+		sigaction(i, &sa, NULL);
 
 	strlcpy(chroot_dir, "/", sizeof(chroot_dir));
 	set_priv("[auth]");
@@ -82,7 +82,7 @@ exec_auth()
 		if (may_read(socks[0], &cmd, sizeof(int)))
 			break;
 		switch (cmd) {
-                case AUTH_GETUGID:
+		case AUTH_GETUGID:
 			/* length, user name */
 			must_read(socks[0], &username_len, sizeof(size_t));
 			if (username_len == 0 || username_len > sizeof(username))
@@ -99,6 +99,7 @@ exec_auth()
 				ret = 0;
 				must_write(socks[0], &ret, sizeof(int));
 			}
+			endpwent();
 			break;
 		case AUTH_EXIT:
 			close(socks[0]);
