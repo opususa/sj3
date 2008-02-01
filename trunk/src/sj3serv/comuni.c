@@ -79,8 +79,6 @@ jmp_buf client_dead;
 int client_fd;
 
 static int fd_unix = -1;
-static int fd_inets[MAX_LISTEN_SOCKS];
-static int num_inets = 0;
 
 static char putbuf[BUFSIZ];
 static char getbuf[BUFSIZ];
@@ -162,99 +160,9 @@ open_af_unix()
 }
 
 void
-open_af_inet()
-{
-	struct addrinfo hints;
-	struct addrinfo *res, *res0;
-	int error;
-	int true = 1;
-
-	/*
-	 * getaddrinfo() case.  You can get IPv6 address and IPv4 address
-	 * at the same time.
-	 */
-	memset(&hints, 0, sizeof(hints));
-	/* set-up hints structure */
-	hints.ai_family = address_family;
-	hints.ai_flags = AI_PASSIVE;
-	hints.ai_socktype = SOCK_STREAM;
-
-	error = getaddrinfo(inet_host_name, inet_port_name, &hints, &res);
-	if (error) {
-		fprintf(stderr, gai_strerror(error));
-		exit(1);
-	}
-
-	res0 = res;
-
-        for ( ; res; res = res->ai_next) {
-		struct sockaddr *sa = res->ai_addr;
-		u_int8_t salen = res->ai_addrlen;
-		char ntop[NI_MAXHOST], strport[NI_MAXSERV];
-		int listen_sock;
-
-		if (res->ai_family != AF_INET && res->ai_family != AF_INET6)
-			continue;
-
-		if (num_inets >= MAX_LISTEN_SOCKS) {
-			fprintf(stderr,
-			    "Too many listen sockets. "
-			    "Enlarge MAX_LISTEN_SOCKS\n");
-			exit(1);
-		}
-
-		if (getnameinfo(sa, salen,
-			ntop, sizeof(ntop), strport, sizeof(strport),
-			NI_NUMERICHOST | NI_NUMERICSERV) != 0) {
-			fprintf(stderr, "getnameinfo failed\n");
-			continue;
-                }
-
-		listen_sock = socket(res->ai_family, res->ai_socktype,
-		    res->ai_protocol);
-
-		if (listen_sock < 0) {
-			fprintf(stderr, "socket: %.100s\n", strerror(errno));
-			exit(1);
-		}
-
-		if (setsockopt(listen_sock, SOL_SOCKET, SO_REUSEADDR,
-			&true, sizeof(true)) == -1)
-			fprintf(stderr, "setsockopt SO_REUSEADDR: %s\n", strerror(errno));
-
-		if (bind(listen_sock, sa, salen) < 0) {
-			fprintf(stderr, "Bind to port %s on %s failed: %.200s.\n",
-			    strport, ntop, strerror(errno));
-			close(listen_sock);
-			continue;
-		}
-
-		if (listen(listen_sock, SOMAXCONN) < 0) {
-			fprintf(stderr, "listen: %.100s\n", strerror(errno));
-			close(listen_sock);
-			exit(1);
-		}
-
-		set_fd(listen_sock);
-
-		fd_inets[num_inets] = listen_sock;
-                num_inets++;
-	}
-	freeaddrinfo(res0);
-
-	if (num_inets < 0) {
-		fprintf(stderr, "Cannot bind any address.");
-		exit(1);
-	}
-}
-
-void
 open_socket()
 {
-	if (inet_enable)
-		open_af_inet();
-	if (domain_enable)
-		open_af_unix();
+	open_af_unix();
 }
 
 static int
@@ -266,34 +174,6 @@ connect_af_unix()
 
 	if ((fd = accept(fd_unix, (struct sockaddr *)&sunix, &i)) == ERROR)
 		warning_out("Can't accept AF_UNIX socket");
-	return fd;
-}
-
-static int
-connect_af_inet(int fd_inet)
-{
-	struct sockaddr_in sin;
-	int i = sizeof(sin);
-	int fd = 0;
-
-	if ((fd = accept(fd_inet, (struct sockaddr *)&sin, &i)) == ERROR)
-		warning_out("Can't accept AF_INET socket");
-
-#ifdef USE_LIBWRAP
-	{
-		struct request_info req;
-
-		request_init(&req, RQ_DAEMON, "sj3", RQ_FILE, fd_inets[i], NULL);
-		fromhost(&req);
-
-		if (!hosts_access(&req)) {
-			warning_out("connection refused from %s",
-			    eval_client(&req));
-			close(fd);
-			fd = -1;
-		}
-	}
-#endif
 	return fd;
 }
 
@@ -316,33 +196,10 @@ close_af_unix()
 	clr_fd(fd_unix);
 }
 
-static void
-close_af_inet()
-{
-	struct sockaddr_in sin;
-	int true = 1;
-	int i, j;
-
-	for (j = 0; j < num_inets; j++) {
-		ioctl(fd_inets[j], FIONBIO, &true);
-		for ( ; ; ) {
-			i = sizeof(sin);
-			if (accept(fd_inets[j], (struct sockaddr *)&sin, &i) < 0)
-				break;
-		}
-		shutdown(fd_inets[j], 2);
-		close(fd_inets[j]);
-		clr_fd(fd_inets[j]);
-	}
-}
-
 void
 close_socket()
 {
-	if (inet_enable)
-		close_af_unix();
-	if (domain_enable)
-		close_af_inet();
+	close_af_unix();
 }
 
 static void
@@ -352,12 +209,6 @@ connect_client(fd_set *readfds)
 	Client *client_tmp;
 	int i;
 
-	for (i = 0; i < num_inets; i++) {
-		if (FD_ISSET(fd_inets[i], readfds)) {
-			fd = connect_af_inet(fd_inets[i]);
-			break;
-		}
-	}
 	if (fd < 0 && FD_ISSET(fd_unix, readfds))
 		fd = connect_af_unix();
 	if (fd == ERROR)

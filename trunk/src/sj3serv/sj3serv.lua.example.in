@@ -43,29 +43,7 @@ sj3.set_server {
    dict_dir = "/spool/sj3",
 }
 
-sj3.set_inet {
-   -- enable: Boolean
-   --  allow acccess via internet connection
-   enable = false,
-
-   -- family: String "unspec" or "inet4" or "inet6"
-   --  address family
-   address_family = "unspec",
-
-   -- host_name: String
-   -- listening address
-   host_name = "localhost",
-
-   -- port_name: String
-   --  binding port name, man services
-   port_name = "3086",
-}
-
 sj3.set_domain {
-   -- enable: Boolean
-   --  allow acccess via unix domain socket
-   enable = true,
-
    -- socket_name: String
    -- binding filename of unix domain socket
    socket_name = prefix .. "/run/sj3serv.socket",

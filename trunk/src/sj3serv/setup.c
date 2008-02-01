@@ -74,7 +74,6 @@ int address_family = AF_UNSPEC;
 char inet_host_name[MAXHOSTNAMELEN];
 char inet_port_name[256];
 
-int domain_enable = -1;
 char domain_socket_name[MAXPATHLEN];
 
 char dict_dir[MAXPATHLEN];
@@ -113,8 +112,6 @@ struct allow_user_entry {
 } *allow_user;
 
 static int opt_daemon_disable = 0;
-static int opt_ipv4 = 0;
-static int opt_ipv6 = 0;
 static lua_State *lua_state;
 
 static int
@@ -265,7 +262,6 @@ set_domain(lua_State *lstate)
 {
 	if (!check_table(lstate))
 		return 0;
-	lua2sj_boolean(lstate, "enable",      1, 0,          &domain_enable);
 	lua2sj_string(lstate,  "socket_name", 1, SOCKETNAME, domain_socket_name, sizeof(domain_socket_name));
 
 	return 0;
@@ -274,7 +270,6 @@ set_domain(lua_State *lstate)
 static int
 get_domain(lua_State *lstate)
 {
-	sj2lua_boolean(lstate, "enable",      domain_enable);
 	sj2lua_string(lstate,  "socket_name", domain_socket_name);
 
 	return 1;
@@ -421,15 +416,6 @@ read_runcmd()
 	else
 		daemon_enable = 1;
 
-	if (opt_ipv4)
-		address_family = AF_INET;
-	else if (opt_ipv6)
-		address_family = AF_INET6;
-	else if (strcmp(inet_address_family, "inet") == 0)
-		address_family = AF_INET;
-	else if (strcmp(inet_address_family, "inet6") == 0)
-		address_family = AF_INET6;
-
 #if 0 /* DON'T LEAVE */
 	lua_close(lua_state);
 	lua_state = NULL;
@@ -490,14 +476,8 @@ parse_arg(int argc, char **argv)
 	strlcpy(program_name, p, sizeof(program_name));
 	strlcpy(runcmd_file, RUNCMDFILE, sizeof(runcmd_file));
 
-	while ((c = getopt(argc, argv, "46f:d")) != EOF) {
+	while ((c = getopt(argc, argv, "f:d")) != EOF) {
 		switch (c) {
-		case '4':
-			opt_ipv4 = 1;
-			break;
-		case '6':
-			opt_ipv6 = 1;
-			break;
 		case 'f':
 			ret = strlcpy(runcmd_file, optarg, sizeof(runcmd_file));
 			if (ret > sizeof(runcmd_file))

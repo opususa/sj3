@@ -14,8 +14,7 @@ INCLUDES = \
 
 LDADD = \
 	$(top_srcdir)/lib/sj3core/libsj3core.la \
-	$(top_srcdir)/lib/sj3compat/libsj3compat.la \
-	@WRAP_LIB@
+	$(top_srcdir)/lib/sj3compat/libsj3compat.la
 
 if SJ3_INTERNAL_LUA
 AM_CFLAGS += -I$(top_builddir)/lib/lua/src
