@@ -51,14 +51,6 @@
 
 #include "config.h"
 
-#ifdef USE_LIBWRAP
-#include <tcpd.h>
-#include <syslog.h>
-
-int allow_severity = LOG_INFO;
-int deny_severity = LOG_WARNING;
-#endif
-
 #include "sj_kcnv.h"
 #include "sj_kanakan.h"
 #include "sj3serv.h"
