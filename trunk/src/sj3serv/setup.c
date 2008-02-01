@@ -218,7 +218,6 @@ set_server(lua_State *lstate)
 	if (!check_table(lstate))
 		return 0;
 	lua2sj_boolean(lstate, "daemon",      1, FORKFLAG,     &daemon_enable);
-	lua2sj_string(lstate,  "pidfile",     1, PIDFILE,      pid_file,    sizeof(pid_file));
 	lua2sj_integer(lstate, "max_client",  1, MAXCLIENTNUM, &max_client);
 	lua2sj_string(lstate,  "dict_dir",    1, DICTROOTDIR,  dict_dir,    sizeof(dict_dir));
 	lua2sj_string(lstate,  "user",        1, SJ3OWNER,     chuser_name, sizeof(chuser_name));
@@ -233,7 +232,6 @@ get_server(lua_State *lstate)
 {
 	lua_newtable(lstate);
 	sj2lua_boolean(lstate, "daemon",      daemon_enable);
-	sj2lua_string(lstate,  "pidfile",    pid_file);
 	sj2lua_integer(lstate, "max_client",  max_client);
 	sj2lua_string(lstate,  "dict_dir",    dict_dir);
 	return 1;

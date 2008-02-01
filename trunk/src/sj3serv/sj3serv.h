@@ -109,7 +109,6 @@ int open_debug();
 void debug_out(int, const char *, ...);
 
 /* main.c */
-int make_pidfile();
 void server_terminate();
 
 extern char program_name [MAXPATHLEN];

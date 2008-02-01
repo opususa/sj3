@@ -59,40 +59,6 @@ opening()
 	printf("Build at %s\r\n", time_stamp);
 }
 
-int
-make_pidfile()
-{
-	int fd;
-	char buf[BUFSIZ];
-	size_t len;
-
-	fd = open(pid_file, O_CREAT | O_WRONLY | O_EXCL, 0600);
-	if (fd < 0) {
-		fprintf(stderr, "can't create file '%s'\n", pid_file);
-		return ERROR;
-	}
-
-	snprintf(buf, sizeof(buf), "%d", getpid());
-	len = strlen(buf);
-	if (write(fd, buf, strlen(buf)) != len) {
-		fprintf(stderr, "can't write file '%s'\n", pid_file);
-		close(fd);
-		return ERROR;
-	}
-
-	close(fd);
-
-	if (!chroot_enable)
-		return 0;
-
-	return 0;
-}
-int
-erase_pidfile()
-{
-	return unlink(pid_file);
-}
-
 static int
 signal_handler(int sig)
 {
@@ -128,8 +94,6 @@ server_terminate()
 	close_socket();
 	sj_closeall();
 	exit_auth();
-
-	erase_pidfile();
 
 	exit(0);
 }
@@ -183,21 +147,12 @@ main(int argc, char **argv)
 	preload_dict();
 	preopen_dict();
 
-	if (make_pidfile() == ERROR) {
-		fprintf(stderr, "already running...\n");
-		fflush(stderr);
-		exit_auth();
-		exit(1);
-	}
-
 	communicate();
 
 	close_socket();
 
 	sj_closeall();
 	exit_auth();
-
-	erase_pidfile();
 
 	exit(0);
 }
