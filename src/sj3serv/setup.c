@@ -48,6 +48,8 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
+#include "sj3lua.h"
+
 #include "sj_typedef.h"
 #include "sj_const.h"
 #include "sj_var.h"
@@ -115,104 +117,9 @@ static int opt_daemon_disable = 0;
 static lua_State *lua_state;
 
 static int
-check_table(lua_State *lstate)
-{
-	if (!lua_istable(lstate, 1)) {
-		fprintf(stderr, "Illegal type of table (type=%s).\n",
-		    lua_typename(lstate, lua_type(lstate, 1)));
-		return 0;
-        }
-	return 1;
-}
-
-static int
-lua2sj_boolean(lua_State *lstate, char *name, int idx, int default_val, int *i)
-{
-	lua_getfield(lstate, idx, name);
-	lua_pop(lstate, idx);
-
-	if (lua_isboolean(lstate, idx - 1)) {
-		*i = (int)lua_toboolean(lstate, idx - 1);
-		return *i;
-	} else if (lua_isnil(lstate, idx - 1)) {
-		*i = default_val;
-		return *i;
-	} else {
-		fprintf(stderr, "Illegal type of '%s'(%s), must be boolean.\n",
-		    name, lua_typename(lstate, lua_type(lstate, idx - 1)));
-		exit(1);
-	}
-}
-
-static int
-lua2sj_integer(lua_State *lstate, char *name, int idx, int default_val, int *i)
-{
-	lua_getfield(lstate, idx, name);
-	lua_pop(lstate, idx);
-
-	if (lua_isnumber(lstate, idx - 1)) {
-		*i = (int)lua_tonumber(lstate, idx - 1);
-		return *i;
-	} else if (lua_isnil(lstate, idx - 1)) {
-		*i = default_val;
-		return *i;
-	} else {
-		fprintf(stderr, "Illegal type of '%s'(%s), must be integer.\n",
-		    name, lua_typename(lstate, lua_type(lstate, idx - 1)));
-		exit(1);
-	}
-}
-
-static char *
-lua2sj_string(lua_State *lstate, char *name, int idx, char *default_val, char *str, size_t len)
-{
-	lua_getfield(lstate, idx, name);
-	lua_pop(lstate, idx);
-
-	if (lua_isstring(lstate, idx - 1)) {
-		strlcpy(str, lua_tostring(lstate, idx - 1), len);
-		return str;
-	} else if (lua_isnil(lstate, idx - 1)) {
-		if (default_val == NULL)
-			str[0] = '\0';
-		else
-			strlcpy(str, default_val, len);
-		return str;
-	} else {
-		fprintf(stderr, "Illegal type of '%s'(%s), must be string.\n",
-		    name, lua_typename(lstate, lua_type(lstate, idx - 1)));
-		exit(1);
-	}
-}
-
-static void
-sj2lua_boolean(lua_State *lstate, char *name, int i)
-{
-	lua_pushstring(lstate, name);
-        lua_pushboolean(lstate, i);
-        lua_settable(lstate, -3);
-}
-
-static void
-sj2lua_integer(lua_State *lstate, char *name, int i)
-{
-	lua_pushstring(lstate, name);
-        lua_pushnumber(lstate, i);
-        lua_settable(lstate, -3);
-}
-
-static void
-sj2lua_string(lua_State *lstate, char *name, char *s)
-{
-	lua_pushstring(lstate, name);
-        lua_pushstring(lstate, s);
-        lua_settable(lstate, -3);
-}
-
-static int
 set_server(lua_State *lstate)
 {
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_boolean(lstate, "daemon",      1, FORKFLAG,     &daemon_enable);
 	lua2sj_integer(lstate, "max_client",  1, MAXCLIENTNUM, &max_client);
@@ -237,7 +144,7 @@ get_server(lua_State *lstate)
 static int
 set_inet(lua_State *lstate)
 {
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_boolean(lstate, "enable",         1, 0,             &inet_enable);
 	lua2sj_string(lstate,  "address_family", 1, ADDRESSFAMILY, inet_address_family, sizeof(inet_address_family));
@@ -260,7 +167,7 @@ get_inet(lua_State *lstate)
 static int
 set_domain(lua_State *lstate)
 {
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_string(lstate,  "socket_name", 1, SOCKETNAME, domain_socket_name, sizeof(domain_socket_name));
 
@@ -281,7 +188,7 @@ append_readdict(lua_State *lstate)
 	char dict[MAXPATHLEN];
 	char passwd[BUFSIZ];
 
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_string(lstate, "file", 1, NULL, dict, sizeof(dict));
 	lua2sj_string(lstate, "passwd", 1, NULL, passwd, sizeof(passwd));
@@ -300,7 +207,7 @@ append_opendict(lua_State *lstate)
 	char dict[MAXPATHLEN];
 	char passwd[BUFSIZ];
 
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_string(lstate, "file", 1, NULL, dict, sizeof(dict));
 	lua2sj_string(lstate, "passwd", 1, NULL, passwd, sizeof(passwd));
@@ -316,7 +223,7 @@ append_opendict(lua_State *lstate)
 static int
 set_log(lua_State *lstate)
 {
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_string(lstate, "file", 1, LOGOUTFILE, log_file, sizeof(log_file));
 
@@ -334,7 +241,7 @@ get_log(lua_State *lstate)
 static int
 set_debug(lua_State *lstate)
 {
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_string(lstate, "file",   1, DEBUGOUTFILE, debug_file, sizeof(debug_file));
 	lua2sj_integer(lstate, "level", 1, DEBUGLEVEL,   &debug_level);
@@ -354,7 +261,7 @@ get_debug(lua_State *lstate)
 static int
 set_error(lua_State *lstate)
 {
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_string(lstate, "file", 1, ERROROUTFILE, error_file, sizeof(error_file));
 
@@ -367,7 +274,7 @@ append_allowuser(lua_State *lstate)
 	char username[BUFSIZ];
 	char hostname[MAXHOSTNAMELEN];
 
-	if (!check_table(lstate))
+	if (!sj3lua_check_table(lstate))
 		return 0;
 	lua2sj_string(lstate, "user", 1, NULL, username, sizeof(username));
 	lua2sj_string(lstate, "host", 1, NULL, hostname, sizeof(hostname));
