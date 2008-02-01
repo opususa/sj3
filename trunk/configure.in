@@ -872,6 +872,7 @@ AC_CONFIG_FILES([
 	  include/sj3compat/Makefile
 	  include/sj3core/Makefile
 	  include/sj3lib/Makefile
+	  include/sj3lua/Makefile
 	  include/sj3rkcv/Makefile
 	  dict/Makefile
 	  doc/Makefile
@@ -881,6 +882,7 @@ AC_CONFIG_FILES([
 	  lib/sj3compat/Makefile
 	  lib/sj3core/Makefile
 	  lib/sj3lib/Makefile
+	  lib/sj3lua/Makefile
 	  lib/lua/Makefile
   	  lib/lua/doc/Makefile
 	  lib/lua/etc/Makefile
