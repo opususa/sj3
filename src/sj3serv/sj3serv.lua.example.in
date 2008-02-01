@@ -21,11 +21,6 @@ sj3.set_server {
    --  set daemonize
    daemon = true,
 
-   -- lockfile: String
-   --  pid file name
-   --  Note: this file is created after chroot
-   pidfile = "/run/sj3serv.pid",
-
    -- max_client: Integer
    --  client connect limit value
    max_client = 512,

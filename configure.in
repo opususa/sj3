@@ -856,7 +856,6 @@ SJ3VARDIR="$sj3var_dir"
 AC_SUBST(SJ3VARDIR)
 AC_DEFINE_UNQUOTED(CHROOTDIR, "$sj3var_dir/spool/sj3", [chrooted dir])
 AC_DEFINE_UNQUOTED(SOCKETNAME, "$sj3var_dir/run/sj3serv.socket", [socket file])
-AC_DEFINE_UNQUOTED(PIDFILE, "$sj3var_dir/run/sj3serv.pid", [pid file])
 
 SJ3DICTDIR="$sj3var_dir/spool/sj3"
 AC_SUBST(SJ3DICTDIR)
