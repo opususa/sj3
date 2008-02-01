@@ -70,12 +70,6 @@ int daemon_enable = -1;
 
 char pid_file[MAXPATHLEN];
 
-int inet_enable = -1;
-char inet_address_family[256];
-int address_family = AF_UNSPEC;
-char inet_host_name[MAXHOSTNAMELEN];
-char inet_port_name[256];
-
 char domain_socket_name[MAXPATHLEN];
 
 char dict_dir[MAXPATHLEN];
@@ -138,29 +132,6 @@ get_server(lua_State *lstate)
 	sj2lua_boolean(lstate, "daemon",      daemon_enable);
 	sj2lua_integer(lstate, "max_client",  max_client);
 	sj2lua_string(lstate,  "dict_dir",    dict_dir);
-	return 1;
-}
-
-static int
-set_inet(lua_State *lstate)
-{
-	if (!sj3lua_check_table(lstate))
-		return 0;
-	lua2sj_boolean(lstate, "enable",         1, 0,             &inet_enable);
-	lua2sj_string(lstate,  "address_family", 1, ADDRESSFAMILY, inet_address_family, sizeof(inet_address_family));
-	lua2sj_string(lstate,  "host_name",      1, LOCALHOST,     inet_host_name,      sizeof(inet_host_name));
-	lua2sj_string(lstate,  "port_name",      1, PORTNUMBER,    inet_port_name,      sizeof(inet_port_name));
-	return 0;
-}
-
-static int
-get_inet(lua_State *lstate)
-{
-	sj2lua_boolean(lstate, "enable",         inet_enable);
-	sj2lua_string(lstate,  "address_family", inet_address_family);
-	sj2lua_string(lstate,  "host_name",      inet_host_name);
-	sj2lua_string(lstate,  "port_name",      inet_port_name);
-
 	return 1;
 }
 
@@ -345,7 +316,6 @@ set_default()
 	/* sj3.functions */
 	lua_newtable(lua_state);
 	set_luafunction(lua_state, "set_server",      set_server);
-	set_luafunction(lua_state, "set_inet",        set_inet);
 	set_luafunction(lua_state, "set_domain",      set_domain);
 	set_luafunction(lua_state, "append_readdict", append_readdict);
 	set_luafunction(lua_state, "append_opendict", append_opendict);
@@ -355,7 +325,6 @@ set_default()
 	set_luafunction(lua_state, "append_allowuser", append_allowuser);
 
 	set_luafunction(lua_state, "get_server",      get_server);
-	set_luafunction(lua_state, "get_inet",        get_inet);
 	set_luafunction(lua_state, "get_domain",      get_domain);
 	set_luafunction(lua_state, "get_log",         get_log);
 	set_luafunction(lua_state, "get_debug",       get_debug);
