@@ -66,7 +66,7 @@
 char program_name[MAXPATHLEN];
 char runcmd_file[MAXPATHLEN];
 
-int daemon_enable = -1;
+int daemon_enable = FORKFLAG;
 
 char pid_file[MAXPATHLEN];
 
@@ -115,7 +115,6 @@ set_server(lua_State *lstate)
 {
 	if (!sj3lua_check_table(lstate))
 		return 0;
-	lua2sj_boolean(lstate, "daemon",      1, FORKFLAG,     &daemon_enable);
 	lua2sj_integer(lstate, "max_client",  1, MAXCLIENTNUM, &max_client);
 	lua2sj_string(lstate,  "dict_dir",    1, DICTROOTDIR,  dict_dir,    sizeof(dict_dir));
 	lua2sj_string(lstate,  "user",        1, SJ3OWNER,     chuser_name, sizeof(chuser_name));
@@ -129,7 +128,6 @@ static int
 get_server(lua_State *lstate)
 {
 	lua_newtable(lstate);
-	sj2lua_boolean(lstate, "daemon",      daemon_enable);
 	sj2lua_integer(lstate, "max_client",  max_client);
 	sj2lua_string(lstate,  "dict_dir",    dict_dir);
 	return 1;
@@ -288,12 +286,6 @@ read_runcmd()
 		exit(255);
 	}
 
-	/* overwrite from opt_args */
-	if (opt_daemon_disable)
-		daemon_enable = 0;
-	else
-		daemon_enable = 1;
-
 #if 0 /* DON'T LEAVE */
 	lua_close(lua_state);
 	lua_state = NULL;
@@ -361,7 +353,7 @@ parse_arg(int argc, char **argv)
 			break;
 
 		case 'd':
-			opt_daemon_disable = 1;
+			daemon_enable = 0;
 			break;
 		case '?':
 		default:
