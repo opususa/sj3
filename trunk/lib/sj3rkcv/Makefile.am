@@ -1,6 +1,6 @@
 if BUILDABLE_SJ3DEMO
 
-EXTRA_DIST = sjrk sj3rkcv.h
+EXTRA_DIST = sjrk
 
 INCLUDES = \
 	-I$(top_srcdir)/include/sj3compat \
