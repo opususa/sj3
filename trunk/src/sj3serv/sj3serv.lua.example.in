@@ -31,12 +31,12 @@ sj3.set_server {
 
    -- chroot_dir: String
    --  chrooted path
-   chroot_dir = prefix,
+   chroot_dir = prefix .. "/spool",
 
    -- dict_dir: String
    --  dictionary name
    --  Note: this directory is opened after chroot
-   dict_dir = "/spool/sj3",
+   dict_dir = "/sj3",
 
    -- strict_auth: Boolean
    --  check always peer userid for security.
@@ -51,8 +51,9 @@ sj3.set_domain {
 }
 
 sj3.append_opendict {
-   -- dir: String
-   --  root directory of dictionaries
+   -- file: String
+   --  main dictionaly name
+   -- Note: this file is opened after chroot
    file = "sj3main.dic",
 }
 
