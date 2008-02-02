@@ -204,13 +204,12 @@ exec_connect()
 		if (getsockname(cur_client->fd, &addr, &len) < 0)
 			perror("getsockname");
 
-		if (addr.sa_family == AF_UNIX) {
+		if (strict_auth_enable) {
 			getpeereid(cur_client->fd, &euid, &egid);
 			if (ugid.uid != euid || ugid.gid != egid) {
 				longjmp(error_ret, SJ3_NotAllowedUser);
 			}
 		}
-
 		cur_cli -> uid = ugid.uid;
 	} else
 		longjmp(error_ret, SJ3_NotAllowedUser);

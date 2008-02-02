@@ -118,6 +118,7 @@ extern char pid_file[MAXPATHLEN];
 extern char chuser_name[BUFSIZ];
 extern int chroot_enable;
 extern char chroot_dir[MAXPATHLEN];
+extern int strict_auth_enable;
 extern char domain_socket_name[MAXPATHLEN];
 extern char dict_dir[MAXPATHLEN];
 extern char dict_file[FILENAME_MAX];
