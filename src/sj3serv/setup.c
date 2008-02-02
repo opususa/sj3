@@ -80,6 +80,8 @@ char chuser_name[BUFSIZ];
 int chroot_enable = -1;
 char chroot_dir[MAXPATHLEN];
 
+int strict_auth_enable = -1;
+
 char log_file[MAXPATHLEN];
 
 char debug_file[MAXPATHLEN];
@@ -115,11 +117,12 @@ set_server(lua_State *lstate)
 {
 	if (!sj3lua_check_table(lstate))
 		return 0;
-	lua2sj_integer(lstate, "max_client",  1, MAXCLIENTNUM, &max_client);
-	lua2sj_string(lstate,  "dict_dir",    1, DICTROOTDIR,  dict_dir,    sizeof(dict_dir));
-	lua2sj_string(lstate,  "user",        1, SJ3OWNER,     chuser_name, sizeof(chuser_name));
-	lua2sj_boolean(lstate, "chroot",      1, CHROOTFLAG,   &chroot_enable);
-	lua2sj_string(lstate,  "chroot_dir",  1, CHROOTDIR,    chroot_dir,  sizeof(dict_dir));
+	lua2sj_integer(lstate, "max_client",   1, MAXCLIENTNUM,   &max_client);
+	lua2sj_string(lstate,  "dict_dir",     1, DICTROOTDIR,    dict_dir,    sizeof(dict_dir));
+	lua2sj_string(lstate,  "user",         1, SJ3OWNER,       chuser_name, sizeof(chuser_name));
+	lua2sj_boolean(lstate, "chroot",       1, CHROOTFLAG,     &chroot_enable);
+	lua2sj_string(lstate,  "chroot_dir",   1, CHROOTDIR,      chroot_dir,  sizeof(dict_dir));
+	lua2sj_boolean(lstate,  "strict_auth", 1, STRICTAUTHFLAG, &strict_auth_enable);
 
 	return 0;
 }
@@ -262,14 +265,6 @@ get_error(lua_State *lstate)
 	sj2lua_string(lstate, "file", error_file);
 
 	return 0;
-}
-
-void
-set_luafunction(lua_State *lstate, char *name, lua_CFunction fun)
-{
-	lua_pushstring(lstate, name);
-        lua_pushcfunction(lstate, fun);
-        lua_settable(lstate, -3);
 }
 
 void

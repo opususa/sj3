@@ -14,17 +14,23 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef SJ3LUA_H
-#define SJ3LUA_H
+#ifndef SJ3PROXY_H
+#define SJ3PROXY_H
 
-int sj3lua_check_table(lua_State *);
-int lua2sj_boolean(lua_State *, char *, int, int, int *);
-int lua2sj_integer(lua_State *, char *, int, int, int *);
-char *lua2sj_string(lua_State *, char *, int, char *, char *, size_t);
-void sj2lua_boolean(lua_State *, char *, int);
-void sj2lua_integer(lua_State *, char *, int);
-void sj2lua_string(lua_State *, char *, char *);
-void set_luafunction(lua_State *, char *, lua_CFunction);
+#include <stdio.h>
+#include <netdb.h>
+#include <sys/param.h>
+
+extern int chroot_enable;
+extern char address_family_str[256];
+extern int address_family;
+extern char chuser_name[BUFSIZ];
+extern char chroot_dir[MAXPATHLEN];
+extern char socket_file[MAXPATHLEN];
+extern char host_name[NI_MAXHOST];
+extern char service_name[NI_MAXSERV];
+
+void set_priv(const char *);
 
 #endif
 

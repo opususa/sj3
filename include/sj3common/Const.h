@@ -66,7 +66,7 @@
 #define	PORTNAME		"sj3"
 #define	LOCALHOST		"localhost"
 #define CHROOTFLAG		1
-
+#define STRICTAUTHFLAG		1
 #define MAINDICTIONARY		"sj3main.dic"
 #define USERDICTIONARY		"private.dic"
 #define STUDYFILE		"study.dat"

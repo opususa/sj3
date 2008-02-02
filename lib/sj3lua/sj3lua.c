@@ -119,3 +119,11 @@ sj2lua_string(lua_State *lstate, char *name, char *s)
         lua_pushstring(lstate, s);
         lua_settable(lstate, -3);
 }
+
+void
+set_luafunction(lua_State *lstate, char *name, lua_CFunction fun)
+{
+	lua_pushstring(lstate, name);
+        lua_pushcfunction(lstate, fun);
+        lua_settable(lstate, -3);
+}

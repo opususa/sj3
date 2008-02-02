@@ -835,8 +835,9 @@ fi
 
 SJ3SYSCONFDIR=$sj3sysconf_dir
 AC_SUBST(SJ3SYSCONFDIR)
-AC_DEFINE_UNQUOTED(SJ3CONFDIR, "$sj3sysconf_dir", [server config dir])
-AC_DEFINE_UNQUOTED(RUNCMDFILE, "$sj3sysconf_dir/sj3serv.lua", [server config file])
+AC_DEFINE_UNQUOTED(SJ3CONFDIR,  "$sj3sysconf_dir", [server config dir])
+AC_DEFINE_UNQUOTED(RUNCMDFILE,  "$sj3sysconf_dir/sj3serv.lua",  [server config file])
+AC_DEFINE_UNQUOTED(SJ3PROXYCFG, "$sj3sysconf_dir/sj3proxy.lua", [proxy config file])
 
 dnl configure config directory
 sj3var_dir=`echo $localstatedir | grep prefix`
@@ -855,6 +856,8 @@ fi
 SJ3VARDIR="$sj3var_dir"
 AC_SUBST(SJ3VARDIR)
 AC_DEFINE_UNQUOTED(CHROOTDIR, "$sj3var_dir/spool/sj3", [chrooted dir])
+AC_DEFINE_UNQUOTED(SOCKDIR, "$sj3var_dir/run", [socket dir])
+AC_DEFINE_UNQUOTED(SOCKETFILE, "/sj3serv.socket", [socket file])
 AC_DEFINE_UNQUOTED(SOCKETNAME, "$sj3var_dir/run/sj3serv.socket", [socket file])
 
 SJ3DICTDIR="$sj3var_dir/spool/sj3"
@@ -894,6 +897,7 @@ AC_CONFIG_FILES([
 	  src/sj3demo/Makefile
 	  src/sj3dic/Makefile
 	  src/sj3mkdic/Makefile
+	  src/sj3proxy/Makefile
 	  src/sj3serv/Makefile
 	  src/sj3stat/Makefile
 ])

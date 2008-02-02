@@ -37,6 +37,11 @@ sj3.set_server {
    --  dictionary name
    --  Note: this directory is opened after chroot
    dict_dir = "/spool/sj3",
+
+   -- strict_auth: Boolean
+   --  check always peer userid for security.
+   --  Note: if you want to run sj3serv with sj3proxy, set false
+   strict_auth = true,
 }
 
 sj3.set_domain {
