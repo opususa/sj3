@@ -17,10 +17,6 @@
 local prefix = "%%SJ3VARDIR%%"
 
 sj3.set_server {
-   -- daemon: Boolean
-   --  set daemonize
-   daemon = true,
-
    -- max_client: Integer
    --  client connect limit value
    max_client = 512,
