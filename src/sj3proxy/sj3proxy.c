@@ -239,7 +239,7 @@ main(int argc, char *argv[])
 	}
 
 	if (errflg || optind < argc) {
-		fprintf(stderr, "Usage: sj3_proxy [-46d]\n");
+		fprintf(stderr, "Usage: sj3_proxy [-46d] [-c configfile]\n");
 		exit(1);
 	}
 
