@@ -215,32 +215,18 @@ main(int argc, char *argv[])
 	int daemon_disable = 0;
 	lua_State *lua_state = NULL;
 	int opt_inet4 = 0, opt_inet6 = 0;
+	char *config_file = SJ3PROXYCFG;
 
-	if ((lua_state = luaL_newstate()) == NULL) {
-		fprintf(stderr, "Can't setup lua");
-		exit(1);
-	}
-
-	luaL_openlibs(lua_state);
-
-	/* sj3.functions */
-	lua_newtable(lua_state);
-	set_luafunction(lua_state, "set_server", set_server);
-	set_luafunction(lua_state, "get_server", get_server);
-	lua_setglobal(lua_state, "sj3proxy");
-
-	if (luaL_dofile(lua_state, SJ3PROXYCFG) != 0) {
-		fprintf(stderr, "%s\n", lua_tostring(lua_state, -1));
-		exit(255);
-	}
-
-	while ((c = getopt(argc, argv, "46d")) != EOF) {
+	while ((c = getopt(argc, argv, "46c:d")) != EOF) {
 		switch (c) {
 		case '4':
 			opt_inet4 = 1;
 			break;
 		case '6':
 			opt_inet6 = 1;
+			break;
+		case 'c':
+			config_file = optarg;
 			break;
 		case 'd':
 			daemon_disable = 1;
@@ -256,6 +242,25 @@ main(int argc, char *argv[])
 		fprintf(stderr, "Usage: sj3_proxy [-46d]\n");
 		exit(1);
 	}
+
+	if ((lua_state = luaL_newstate()) == NULL) {
+		fprintf(stderr, "Can't setup lua");
+		exit(1);
+	}
+
+	luaL_openlibs(lua_state);
+
+	/* sj3.functions */
+	lua_newtable(lua_state);
+	set_luafunction(lua_state, "set_server", set_server);
+	set_luafunction(lua_state, "get_server", get_server);
+	lua_setglobal(lua_state, "sj3proxy");
+
+	if (luaL_dofile(lua_state, config_file) != 0) {
+		fprintf(stderr, "%s\n", lua_tostring(lua_state, -1));
+		exit(255);
+	}
+
 
 	if (strcmp(address_family_str, "unspec") == 0)
 		address_family = AF_UNSPEC;
