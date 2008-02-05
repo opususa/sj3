@@ -749,7 +749,7 @@ AM_CONDITIONAL(BUILDABLE_SJ3DEMO, test x$enable_demo = xyes)
 AC_MSG_RESULT($enable_demo)
 
 AC_ARG_WITH(external-lua,
-  AS_HELP_STRING([--with-external-lua], [Use external lua library,
+  AS_HELP_STRING([--with-external-lua], [Use external lua library
                                          @<:@default=no@:>@]),
   [
     if test "x$with_external_lua" = "xyes"; then
@@ -765,7 +765,8 @@ AC_ARG_WITH(external-lua,
 AM_CONDITIONAL(SJ3_INTERNAL_LUA, test x$with_internal_lua = xyes)
 
 AC_ARG_WITH(user,
-[  --with-user=uid         name of the sj3 user (default=_sj3)],
+  AS_HELP_STRING([--with-user=uid], [name of the sj3 user
+  				     @<:@default=_sj3@:>@]),
 sj3_user="$withval", sj3_user="_sj3")
 
 SJ3OWNER=$sj3_user
@@ -773,7 +774,8 @@ AC_DEFINE_UNQUOTED(SJ3OWNER, "$sj3_user",[name of the sj3 user])
 AC_SUBST(SJ3OWNER)
 
 AC_ARG_WITH(group,
-[  --with-group=gid        name of the sj3 group (default=_sj3)],
+  AS_HELP_STRING([--with-group=gid], [name of the sj3 group
+  				      @<:@default=_sj3@:>@]),
 sj3_group="$withval", sj3_group="_sj3")
 
 SJ3GROUP=$sj3_group
