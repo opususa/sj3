@@ -13,4 +13,6 @@ libsj3compat_la_SOURCES = \
 	inet_ntoa.c \
 	setproctitle.c \
 	strlcat.c \
-	strlcpy.c
+	strlcpy.c \
+	vis.c
+

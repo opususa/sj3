@@ -106,6 +106,7 @@ AC_CHECK_HEADERS([ \
 	utmp.h \
 	utmpx.h \
 	wctype.h \
+	vis.h \
 ])
 
 case "$host" in
@@ -360,6 +361,7 @@ AC_CHECK_FUNCS([ \
 	strerror \
 	strlcat \
 	strlcpy \
+	strnvis \
 	strrchr \
 	strstr \
 	strtol \
