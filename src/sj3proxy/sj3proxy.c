@@ -30,6 +30,9 @@
 #include <sys/un.h>
 #include <sys/wait.h>
 #include <sys/param.h>
+#if defined(HAVE_STRVISX) && defined(HAVE_VIS_H)
+# include <vis.h>
+#endif
 #include "sys-queue.h"
 
 #include <lua.h>
@@ -49,6 +52,8 @@ char chroot_dir[MAXPATHLEN];
 char socket_file[MAXPATHLEN];
 char host_name[NI_MAXHOST];
 char service_name[NI_MAXSERV];
+
+static int trace_enable = 0;
 
 struct listen_addr {
 	TAILQ_ENTRY(listen_addr) entry;
@@ -143,6 +148,12 @@ readwrite(int inet_fd)
 				shutdown(inet_fd, SHUT_RD);
 				return;
 			} else {
+				if (trace_enable) {
+					char fmtbuf[BUFSIZ * 4 + 1];
+					strvisx(fmtbuf, buf, readlen, VIS_CSTYLE|VIS_NL|VIS_TAB|VIS_OCTAL);
+					fmtbuf[BUFSIZ * 4] = 0;
+					printf("i< %s\n", fmtbuf);
+				}
 				if (atomicio(vwrite, sj3_fd, buf, readlen) != readlen)
 					return;
 			}
@@ -156,6 +167,12 @@ readwrite(int inet_fd)
 				shutdown(inet_fd, SHUT_WR);
 				return;
 			} else {
+				if (trace_enable) {
+					char fmtbuf[BUFSIZ * 4 + 1];
+					strvisx(fmtbuf, buf, readlen, VIS_CSTYLE|VIS_NL|VIS_TAB|VIS_OCTAL);
+					fmtbuf[BUFSIZ * 4] = 0;
+					printf("o> %s\n", fmtbuf);
+				}
 				if (atomicio(vwrite, inet_fd, buf, readlen) != readlen)
                                         return;
 			}
@@ -217,7 +234,7 @@ main(int argc, char *argv[])
 	int opt_inet4 = 0, opt_inet6 = 0;
 	char *config_file = SJ3PROXYCFG;
 
-	while ((c = getopt(argc, argv, "46c:d")) != EOF) {
+	while ((c = getopt(argc, argv, "46c:dt")) != EOF) {
 		switch (c) {
 		case '4':
 			opt_inet4 = 1;
@@ -230,6 +247,9 @@ main(int argc, char *argv[])
 			break;
 		case 'd':
 			daemon_disable = 1;
+			break;
+		case 't':
+			trace_enable = 1;
 			break;
 		case '?':
 		default:

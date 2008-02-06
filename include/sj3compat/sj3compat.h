@@ -126,9 +126,9 @@ size_t sj3_strlcpy(char *, const char *, size_t);
 #endif
 
 /* vis.c */
-#ifndef HAVE_STRNVIS
-#define strnvis		sj3strnvis
-int strnvis(char *, const char *, size_t, int);
+#ifndef HAVE_STRVISX
+#define strvisx		sj3strvisx
+int strvisx(char *, const char *, size_t, int);
 #endif
 
 #endif /* SJ3COMPAT_H */
