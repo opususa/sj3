@@ -810,9 +810,9 @@ sj3var_dir=`echo $localstatedir | grep prefix`
 if test -n "$sj3var_dir"; then
     if test "$prefix" = "NONE"
     then
-	sj3var_dir="$ac_default_prefix/var"
+	sj3var_dir="$ac_default_prefix/var/sj3"
     else
-	sj3var_dir="$prefix/var"
+	sj3var_dir="$prefix/var/sj3"
     fi
 else
 	sj3var_dir="$localstatedir"
@@ -820,12 +820,12 @@ fi
 
 SJ3VARDIR="$sj3var_dir"
 AC_SUBST(SJ3VARDIR)
-AC_DEFINE_UNQUOTED(CHROOTDIR, "$sj3var_dir/spool/sj3", [chrooted dir])
+AC_DEFINE_UNQUOTED(CHROOTDIR, "$sj3var_dir/dict", [chrooted dir])
 AC_DEFINE_UNQUOTED(SOCKDIR, "$sj3var_dir/run", [socket dir])
 AC_DEFINE_UNQUOTED(SOCKETFILE, "/sj3serv.socket", [socket file])
 AC_DEFINE_UNQUOTED(SOCKETNAME, "$sj3var_dir/run/sj3serv.socket", [socket file])
 
-SJ3DICTDIR="$sj3var_dir/spool/sj3"
+SJ3DICTDIR="$sj3var_dir/dict"
 AC_SUBST(SJ3DICTDIR)
 AC_DEFINE_UNQUOTED(DICTROOTDIR, "$SJ3DICTDIR", [dict root dir])
 

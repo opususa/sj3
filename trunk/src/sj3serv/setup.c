@@ -99,7 +99,7 @@ struct dict_entry {
 	TAILQ_ENTRY(dict_entry) entries;
 } *read_dict, *open_dict;
 
-int dir_mode = -1;
+int dir_mode = S_IRWXU;
 int file_mode = S_IRUSR | S_IWUSR;
 
 TAILQ_HEAD(, allow_user_entry) allow_user_head;
