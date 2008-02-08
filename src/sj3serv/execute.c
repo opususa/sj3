@@ -91,11 +91,10 @@ make_full_path(char *path, int pathlen)
 		return ERROR;
 
 	strlcpy(tmp, path, sizeof(tmp));
-	index = strtok(tmp, "/");
-	do {
+	for (index = strtok(tmp, "/"); index != NULL; index = strtok(NULL, "/")) {
 		if (!strcmp(index, ".."))
 			return ERROR;
-	} while ((index = strtok(NULL, "/")) != NULL );
+	}
 
 	if (*path == '/') {
 		if (strncmp(path, dict_dir, strlen(dict_dir)) == 0) {
