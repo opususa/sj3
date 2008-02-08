@@ -155,11 +155,19 @@ int main(void) { exit(0); }
 		AC_MSG_RESULT($blibflags)
 	fi
 	LDFLAGS="$saved_LDFLAGS"
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-cygwin*)
 	AC_DEFINE(HAVE_CYGWIN, 1, [Define if you are on Cygwin])
 	;;
 *-*-dgux*)
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-darwin*)
 	AC_MSG_CHECKING(if we have working getaddrinfo)
@@ -172,6 +180,10 @@ main() { if (NSVersionOfRunTimeLibrary("System") >= (60 << 16))
 	[AC_MSG_RESULT(buggy)
 	AC_DEFINE(BROKEN_GETADDRINFO, 1, [getaddrinfo is broken (if present)])],
 	[AC_MSG_RESULT(assume it is working)])
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-dragonfly*)
 	;;
@@ -204,10 +216,18 @@ main() { if (NSVersionOfRunTimeLibrary("System") >= (60 << 16))
 	AC_DEFINE(BROKEN_INET_NTOA, 1,
 		[Define if you system's inet_ntoa is busted
 		(e.g. Irix gcc issue)])
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-irix6*)
 	PATH="$PATH:/usr/etc"
 	AC_DEFINE(BROKEN_INET_NTOA)
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-linux*)
 	AC_DEFINE(DONT_TRY_OTHER_AF, 1, [Workaround more Linux IPv6 quirks])
@@ -221,6 +241,10 @@ mips-sony-bsd|mips-sony-newsos4)
 *-*-freebsd*)
 	;;
 *-*-bsdi*)
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-next-*)
 	;;
@@ -235,6 +259,10 @@ mips-sony-bsd|mips-sony-newsos4)
 	;;
 *-ncr-sysv*)
 	LIBS="$LIBS -lc89"
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-sni-sysv*)
 	# /usr/ucblib MUST NOT be searched on ReliantUNIX
@@ -244,12 +272,24 @@ mips-sony-bsd|mips-sony-newsos4)
 	# /usr/ucblib/libucb.a no longer needed on ReliantUNIX
 	# Attention: always take care to bind libsocket and libnsl before libc,
 	# otherwise you will find lots of "SIOCGPGRP errno 22" on syslog
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 # UnixWare 1.x, UnixWare 2.x, and others based on code from Univel.
 *-*-sysv4.2*)
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 # UnixWare 7.x, OpenUNIX 8
 *-*-sysv5*)
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-sysv*)
 	;;
@@ -266,11 +306,19 @@ mips-sony-bsd|mips-sony-newsos4)
 	no_dev_ptmx=1
 	MANTYPE=man
 	TEST_SHELL=ksh
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-unicosmk*)
 	LDFLAGS="$LDFLAGS"
 	LIBS="$LIBS -lgen -lrsc -lshare -luex -lacm"
 	MANTYPE=cat
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-unicosmp*)
 	LDFLAGS="$LDFLAGS"
@@ -281,9 +329,17 @@ mips-sony-bsd|mips-sony-newsos4)
 	LDFLAGS="$LDFLAGS -Wl,-Dmsglevel=334:fatal"
 	LIBS="$LIBS -lgen -lrsc -lshare -luex -lacm"
 	MANTYPE=cat
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-dec-osf*)
 	AC_DEFINE(BROKEN_GETADDRINFO)
+	AC_DEFINE(SETEUID_BREAKS_SETUID, 1,
+	    [Define if your platform breaks doing a seteuid before a setuid])
+	AC_DEFINE(BROKEN_SETREUID, 1, [Define if your setreuid() is broken])
+	AC_DEFINE(BROKEN_SETREGID, 1, [Define if your setregid() is broken])
 	;;
 *-*-nto-qnx*)
 	;;
@@ -351,6 +407,7 @@ AC_CHECK_FUNCS([ \
 	memset \
 	mkdir \
 	select \
+	seteuid \
 	setlocale \
 	setproctitle \
 	setsid \

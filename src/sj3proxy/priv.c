@@ -14,6 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <config.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -52,8 +53,21 @@ set_priv(const char *title)
 	 * Drop privileges and clear the group access list
 	 */
 	if (setgroups(1, &pw->pw_gid) == -1 ||
+#if defined(HAVE_SETRESUID) && !defined(BROKEN_SETRESUID)
 	    setresgid(pw->pw_gid, pw->pw_gid, pw->pw_gid) == -1 ||
-	    setresuid(pw->pw_uid, pw->pw_uid, pw->pw_uid) == -1) {
+	    setresuid(pw->pw_uid, pw->pw_uid, pw->pw_uid) == -1
+#elif defined(HAVE_SETREUID) && !defined(BROKEN_SETREUID)
+	    setregid(pw->pw_gid, pw->pw_gid, pw->pw_gid) == -1 ||
+	    setreuid(pw->pw_uid, pw->pw_uid, pw->pw_uid) == -1
+#else
+# ifndef SETEUID_BREAKS_SETUID
+	    setegid(pw->pw_gid) == -1 ||
+	    seteuid(pw->pw_uid) == -1
+# endif
+	    setgid(pw->pw_gid) == -1 ||
+	    setuid(pw->pw_uid) == -1
+#endif
+	   ) {
 		fprintf(stderr, "can't drop privileges\n");
 		fflush(stderr);
 		exit(255);
