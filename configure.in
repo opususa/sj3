@@ -408,6 +408,8 @@ AC_CHECK_FUNCS([ \
 	mkdir \
 	select \
 	seteuid \
+	setregid \
+	setreuid \
 	setlocale \
 	setproctitle \
 	setsid \
