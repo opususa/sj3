@@ -402,7 +402,7 @@ main(int argc, char *argv[])
 			exit(1);
 		}
 
-		memcpy(&listen_addrs_ptr->sa, sa, SA_LEN(sa));
+		memcpy(&listen_addrs_ptr->sa, sa, salen);
 		listen_addrs_ptr->fd = listen_sock;
 		TAILQ_INSERT_TAIL(&listen_addrs, listen_addrs_ptr, entry);
 	}
