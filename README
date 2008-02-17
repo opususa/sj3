@@ -46,6 +46,8 @@
 	src/sj3mkdic	Tool for converting main dictionary from text file
 			to binary file
 
+	src/sj3proxy	network proxy server
+
 	src/sj3serv	Kana-Kanji conversion server
 
 	src/sj3dic	User dictionary utility
