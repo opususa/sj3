@@ -15,7 +15,6 @@ INCLUDES = \
 
 LDADD = \
 	$(top_srcdir)/lib/sj3core/libsj3core.la \
-	$(top_srcdir)/lib/sj3compat/libsj3compat.la \
 	$(top_srcdir)/lib/sj3lua/libsj3lua.la
 
 if SJ3_INTERNAL_LUA
@@ -25,6 +24,8 @@ else
 AM_CFLAGS += $(LUA_CFLAGS)
 LDADD     += $(LUA_LIBS)
 endif
+
+LDADD	+= $(top_srcdir)/lib/sj3compat/libsj3compat.la
 
 exampledir = $(datadir)/examples/sj3
 
