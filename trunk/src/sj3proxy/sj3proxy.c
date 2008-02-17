@@ -77,6 +77,8 @@
 #include <sys/param.h>
 #if defined(HAVE_STRVISX) && defined(HAVE_VIS_H)
 # include <vis.h>
+#else
+# include <sj3vis.h>
 #endif
 #include "sys-queue.h"
 
