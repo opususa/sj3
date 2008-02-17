@@ -65,7 +65,7 @@ sj3.set_log {
 
 sj3.set_debug {
    -- file: String
-   --  output filename of debug out
+   --  output filename of debug output
    file = nil,
 
    -- debug_level: Integer

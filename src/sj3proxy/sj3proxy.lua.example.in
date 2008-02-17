@@ -34,7 +34,7 @@ sj3proxy.set_server {
    --  Note: this file is opened after chroot
    socket_file = "/sj3serv.socket",
 
-   -- address_famiy: String (unspec or inet4 or inet6)
+   -- address_famiy: String ("unspec" or "inet4" or "inet6")
    --  listening address family
    address_famiy = "unspec",
 
