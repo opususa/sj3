@@ -40,7 +40,7 @@ sj3.set_serverはsj3servの基本的な設定を行う関数です。
  * user: 文字列
  sj3serv起動後に変更されるユーザ名。sj3servはrootで起動後、このユーザへ権限が降格されます。
  * chroot: boolean
- chrootするかどうか。セキュリティ向上のため、trueに設定することを*強く推奨します*。
+ chrootするかどうか。セキュリティの効果を最大にするため、trueに設定することを*強く推奨します*。
  * chroot_dir: 文字列
  sj3serv起動後の、chrootする先のディレクトリ名。
  * dict_dir: 文字列
