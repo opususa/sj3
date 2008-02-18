@@ -5,7 +5,7 @@
 ||クライアント名||接続方法||備考||
 ||sj3proxy||UNIXドメインソケット||sj3に同梱||
 ||sj3demo||sj3lib||sj3に同梱||
-||kinput2||sj3lib||||
-||emacs-tamago||inet||sj3proxyが必要||
-||emcws||inet||sj3proxyが必要||
-||uim-sj3||sj3lib||-trunkのみ||
+||kinput2||sj3lib||文節学習には[http://www.tk2.nmt.ne.jp/~artrec/ar-sj3.shtml patch]が必要||
+||emacs-tamago||inet||sj3proxyの起動が必要||
+||emcws||inet||sj3proxyの起動が必要||
+||uim-sj3||sj3lib||-trunkにのみ存在。文節学習未実装||
