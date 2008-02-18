@@ -29,9 +29,9 @@ $prefixはconfigureの指定によりますが、デフォルトで"/usr/local"�
 
 = sj3.set_server =
 
- * sj3.set_server([_settings_])
+sj3.set_server([_settings_])
 
-sj3.set_serverはsj3servの基本的な設定を行う関数です。引数はテーブルを渡します。
+sj3.set_serverはsj3servの基本的な設定を行う関数です。引数にはテーブルを渡します。
 テーブルに設定可能なアイテムは以下のものです。
 
  * max_client: 整数値
@@ -46,3 +46,21 @@ sj3.set_serverはsj3servの基本的な設定を行う関数です。引数は�
  辞書のディレクトリ名。chroot後に辞書を開くので、chroot=true指定時には"/"の位置が変わるので注意してください。
  * strict_auth: boolean
  接続時しているクライアントのユーザが、指定された辞書のユーザ名に一致するかどうかチェックします。sj3proxyをしない限りはtrueに設定することを推奨します。
+
+= sj3.set_domain =
+
+sj3.set_domain([_settings_])
+
+クライアントの通信に使用されるUNIXドメインソケットの設定を行います。
+
+ * socket_name: 文字列
+ ソケットファイルの位置を指定します。
+
+= sj3.append_opendict =
+
+sj3.append_opendict([_settings_])
+
+デフォルトでオープンされる辞書を追加します。
+
+ * file: 文字列
+ 辞書名を指定します。
