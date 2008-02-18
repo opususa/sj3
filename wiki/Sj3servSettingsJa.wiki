@@ -12,7 +12,7 @@ $prefixはconfigureの指定によりますが、デフォルトで"/usr/local"�
 
 = 書式 =
 
-設定ファイルはluaで書きます。
+設定ファイルはluaで記述します。
 文法は[http://www.lua.org/ lua]のページを参照してください。
 
 = 設定項目 =
@@ -26,3 +26,23 @@ $prefixはconfigureの指定によりますが、デフォルトで"/usr/local"�
  * sj3.set_debug()
  * sj3.set_error()
  * sj3.append_allowuser()
+
+= sj3.set_server =
+
+ * sj3.set_server([_settings_])
+
+sj3.set_serverはsj3servの基本的な設定を行う関数です。引数はテーブルを渡します。
+テーブルに設定可能なアイテムは以下のものです。
+
+ * max_client: 整数値
+ サーバへ接続の上限値
+ * user: 文字列
+ sj3serv起動後に変更されるユーザ名。sj3servはrootで起動後、このユーザへ権限が降格されます。
+ * chroot: boolean
+ chrootするかどうか。セキュリティ向上のため、trueに設定することを*強く推奨します*。
+ * chroot_dir: 文字列
+ sj3serv起動後の、chrootする先のディレクトリ名。
+ * dict_dir: 文字列
+ 辞書のディレクトリ名。chroot後に辞書を開くので、chroot=true指定時には"/"の位置が変わるので注意してください。
+ * strict_auth: boolean
+ 接続時しているクライアントのユーザが、指定された辞書のユーザ名に一致するかどうかチェックします。sj3proxyをしない限りはtrueに設定することを推奨します。
