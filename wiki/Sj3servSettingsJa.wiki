@@ -18,6 +18,7 @@ $prefixはconfigureの指定によりますが、デフォルトで"/usr/local"�
 = 設定項目 =
 
 以下の関数が設定用に用意されています。
+現在のところ、引数はすべてテーブル渡しです。
 
  * sj3.set_server()
  * sj3.set_domain()
@@ -31,7 +32,7 @@ $prefixはconfigureの指定によりますが、デフォルトで"/usr/local"�
 
 sj3.set_server([_settings_])
 
-sj3.set_serverはsj3servの基本的な設定を行う関数です。引数にはテーブルを渡します。
+sj3.set_serverはsj3servの基本的な設定を行う関数です。
 テーブルに設定可能なアイテムは以下のものです。
 
  * max_client: 整数値
@@ -64,3 +65,33 @@ sj3.append_opendict([_settings_])
 
  * file: 文字列
  辞書名を指定します。
+
+= sj3.set_log =
+
+sj3.set_log([_settings_])
+
+ロギング関連の設定を行います。
+
+ * file: 文字列
+ ログの出力先ファイルを指定します。
+
+= sj3.set_debug =
+
+sj3.set_debug([_settings_])
+
+デバッグ関連の設定を行います。
+
+ * file: 文字列
+ デバッグログの出力先ファイルを指定します。
+
+ * level: 整数値
+ デバッグレベルを指定します。
+
+= sj3.set_error =
+
+sj3.set_error([_settings_])
+
+エラー出力関連の設定を行います。
+
+ * file: 文字列
+ エラーファイルの出力先を指定します。
