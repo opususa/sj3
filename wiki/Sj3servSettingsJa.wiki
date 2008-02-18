@@ -1,0 +1,26 @@
+#summary sj3servの設定
+
+= 設定ファイルの場所 =
+
+設定ファイルは${prefix}/etc/sj3/sj3serv.luaです。
+$prefixはconfigureの指定によりますが、デフォルトで"/usr/local"になっています。
+
+雛型のファイル"sj3serv.lua.example"が${prefix}/share/examples/sj3以下にありますので、
+これをコピーしてカスタマイズすればいいでしょう。
+
+= 書式 =
+
+設定ファイルはluaで書きます。
+文法は[http://www.lua.org/ lua]のページを参照してください。
+
+= 設定項目 =
+
+以下の関数が設定用に用意されています。
+
+ * sj3.set_server()
+ * sj3.set_domain()
+ * sj3.append_opendict()
+ * sj3.set_log()
+ * sj3.set_debug()
+ * sj3.set_error()
+ * sj3.append_allowuser()
