@@ -1,5 +1,7 @@
 #summary sj3servの設定
 
+ここではsj3servの設定について述べます。
+
 = 設定ファイルの場所 =
 
 設定ファイルは${prefix}/etc/sj3/sj3serv.luaです。
