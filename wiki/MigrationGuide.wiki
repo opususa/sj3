@@ -4,11 +4,11 @@
 
 == Changes ==
 
- * New user {{{_sj3}}} is required. Add new user {{{_sj3}}}.
+ * New user "{{{_sj3}}}" is required. Add new user "{{{_sj3}}}".
  * Placement of UNIX domain socket file is changed from "/tmp/sj3sock" to "/usr/local/var/sj3/run/sj3serv.socket". Old version of sj3lib cannot access this file. If you use software of using sj3lib (like kinput2, etc.), please relink new sj3lib.
  * Configuration file "/usr/local/lib/sj3/serverrc" is changed to "/usr/local/etc/sj3/sj3serv.lua". Detail of setting is Sj3servSettings.
  * sj3serv does not listen internet. If you want to use client of internet socket only use (like egg, etc.), edit entry of sj3serv.lua, "strict_auth" to "false". And then start sj3serv and sj3proxy.
- * Placement of dictionary is changed from "/usr/local/lib/sj3/dict" to "/usr/local/var/sj3/dict". And directory/file of dictionary can edit by {{{_sj3}}} user only.
+ * Placement of dictionary is changed from "/usr/local/lib/sj3/dict" to "/usr/local/var/sj3/dict". And directory/file of dictionary can be edited by "{{{_sj3}}}" user only.
 
 == Dictionary migration ==
 
