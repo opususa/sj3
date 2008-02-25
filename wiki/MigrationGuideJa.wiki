@@ -1,0 +1,26 @@
+#summary 旧バージョンからの移行のためのガイド
+
+= sj3-2.0.1.21からsj3-2.0.1.23への移行について =
+
+== 変更点 ==
+
+以下の点が変更点です。
+
+ * ユーザ{{{_sj3}}}がインストール時に必要になりました。インストール前に追加してください。
+ * ソケットの場所が/tmp/sj3sockから/usr/local/var/sj3/run/sj3serv.socketに変更されました。
+ * 設定ファイルが/usr/local/lib/sj3/serverrcから/usr/local/etc/sj3/sj3serv.luaに変更されました。設定の詳細はSj3servSettingsJaを参照してください。
+ * sj3servはネットワーク接続しなくなりました。もし、egg等のネットワーク接続が必要なクライアントから利用する場合、sj3.set_serverの"strict_auth"を"false"にした後、sj3proxyを起動してください。
+ * 辞書の場所が変更されました。/usr/local/lib/sj3/dictから/usr/local/var/sj3/dictに変更されました。また、辞書ディレクトリは{{{_sj3}}}のみ閲覧可能になります。
+
+== 辞書の移行例 ==
+
+すでにカスタマイズ済みのsj3main.dicがある場合、
+
+{{{
+# mkdir /usr/local/var/sj3/run                      # ソケットのディレクトリ作成
+# rm -fr /usr/local/var/sj3/dict                    # デフォルトインストールの辞書を削除
+# mv /usr/local/lib/sj3/dict /usr/local/var/sj3     # 辞書を移動
+# find /usr/local/var/sj3 | xargs chown _sj3:_sj3   # 所有者を_sj3に変更
+# find /usr/local/var/sj3 -type d | xargs chmod 700 # すべてのディレクトリをdrwx------に変更
+# find /usr/local/var/sj3 -type f | xargs chmod 600 # すべてのファイルを-rw-------に変更
+}}}
