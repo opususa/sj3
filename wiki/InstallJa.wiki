@@ -29,7 +29,7 @@
 
 *インストールするには、ユーザ"{{{_sj3}}}"が必要です。事前に追加しておいてください。*
 
-ルートになって、
+rootになって、
 
 {{{
  make install
@@ -58,6 +58,4 @@ sj3proxy.lua.exampleは一般的なデスクトップユーザ用の設定です
 {{{
  cp /usr/local/share/examples/sj3proxy.lua.example /usr/local/etc/sj3/sj3serv.lua
 }}}
-
-
 
