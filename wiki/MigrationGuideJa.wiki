@@ -21,6 +21,6 @@
 # rm -fr /usr/local/var/sj3/dict                    # デフォルトインストールの辞書を削除
 # mv /usr/local/lib/sj3/dict /usr/local/var/sj3     # 辞書を移動
 # find /usr/local/var/sj3 | xargs chown _sj3:_sj3   # 所有者を_sj3に変更
-# find /usr/local/var/sj3 -type d | xargs chmod 700 # すべてのディレクトリをdrwx------に変更
+# find /usr/local/var/sj3/dict/user -type d | xargs chmod 700 # すべてのディレクトリをdrwx------に変更
 # find /usr/local/var/sj3 -type f | xargs chmod 600 # すべてのファイルを-rw-------に変更
 }}}
