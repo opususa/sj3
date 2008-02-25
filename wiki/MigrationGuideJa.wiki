@@ -10,7 +10,7 @@
  * ソケットの場所が/tmp/sj3sockから/usr/local/var/sj3/run/sj3serv.socketに変更されました。
  * 設定ファイルが/usr/local/lib/sj3/serverrcから/usr/local/etc/sj3/sj3serv.luaに変更されました。設定の詳細はSj3servSettingsJaを参照してください。
  * sj3servはネットワーク接続しなくなりました。もし、egg等のネットワーク接続が必要なクライアントから利用する場合、sj3.set_serverの"strict_auth"を"false"にした後、sj3proxyを起動してください。
- * 辞書の場所が変更されました。/usr/local/lib/sj3/dictから/usr/local/var/sj3/dictに変更されました。また、辞書ディレクトリは{{{_sj3}}}のみ閲覧可能になります。
+ * 辞書の場所が変更されました。/usr/local/lib/sj3/dictから/usr/local/var/sj3/dictに変更されました。また、辞書ディレクトリは{{{_sj3}}}のみ閲覧/編集可能になります。
 
 == 辞書の移行例 ==
 
