@@ -7,10 +7,10 @@
 以下の点が変更点です。
 
  * ユーザ{{{_sj3}}}がインストール時に必要になりました。インストール前に追加してください。
- * ソケットの場所が/tmp/sj3sockから/usr/local/var/sj3/run/sj3serv.socketに変更されました。
- * 設定ファイルが/usr/local/lib/sj3/serverrcから/usr/local/etc/sj3/sj3serv.luaに変更されました。設定の詳細はSj3servSettingsJaを参照してください。
+ * ソケットの場所が"/tmp/sj3sock"から"/usr/local/var/sj3/run/sj3serv.socket"に変更されました。以前のsj3libからは参照できなくなりますので、sj3libを利用するソフトウェア(kinput2等)を使っている場合、新しいsj3libをリンクし直してください。
+ * 設定ファイルが"/usr/local/lib/sj3/serverrc"から"/usr/local/etc/sj3/sj3serv.lua"に変更されました。設定の詳細はSj3servSettingsJaを参照してください。
  * sj3servはネットワーク接続しなくなりました。もし、egg等のネットワーク接続が必要なクライアントから利用する場合、sj3.set_serverの"strict_auth"を"false"にした後、sj3servとsj3proxyを起動してください。
- * 辞書の場所が変更されました。/usr/local/lib/sj3/dictから/usr/local/var/sj3/dictに変更されました。また、辞書ディレクトリは{{{_sj3}}}のみ閲覧/編集可能になります。
+ * 辞書の場所が変更されました。"/usr/local/lib/sj3/dict"から"/usr/local/var/sj3/dict"に変更されました。また、辞書ディレクトリは{{{_sj3}}}のみ閲覧/編集可能になります。
 
 == 辞書の移行例 ==
 
