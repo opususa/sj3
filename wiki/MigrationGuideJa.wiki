@@ -22,5 +22,7 @@
 # mv /usr/local/lib/sj3/dict /usr/local/var/sj3     # 辞書を移動
 # find /usr/local/var/sj3 | xargs chown _sj3:_sj3   # 所有者を_sj3に変更
 # find /usr/local/var/sj3/dict/user -type d | xargs chmod 700 # すべてのディレクトリをdrwx------に変更
-# find /usr/local/var/sj3 -type f | xargs chmod 600           # すべてのファイルを-rw-------に変更
+# find /usr/local/var/sj3/dict -type f | xargs chmod 600      # すべてのファイルを-rw-------に変更
+# chown root:wheel /usr/local/var/sj3/dict/sj3main.dic # sj3main.dicの所有者をrootに変更
+# chmod 644 /usr/local/var/sj3/dict/sj3main.dic        # sj3main.dicを-rw-r--r--に変更
 }}}
