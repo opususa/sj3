@@ -7,7 +7,7 @@
 以下の点が変更点と対処方法です。
 
  * ユーザ"{{{_sj3}}}"がインストール時に必要になりました。インストール前に追加してください。
- * sj2servの実行ファイルからseuid flagsが外されました。一般ユーザがsj3servを起動することは出来なくなりました。
+ * sj2servの実行ファイルからsetuid flagsが外されました。一般ユーザがsj3servを起動することは出来なくなりました。
  * ソケットの場所が"/tmp/sj3sock"から"/usr/local/var/sj3/run/sj3serv.socket"に変更されました。以前のsj3libからは参照できなくなりますので、sj3libを利用するソフトウェア(kinput2等)を使っている場合、新しいsj3libをリンクし直してください。
  * 設定ファイルが"/usr/local/lib/sj3/serverrc"から"/usr/local/etc/sj3/sj3serv.lua"に変更されました。設定の詳細はSj3servSettingsJaを参照してください。
  * sj3servはネットワーク接続しなくなりました。もし、egg等のネットワーク接続が必要なクライアントから利用する場合、sj3.set_serverの"strict_auth"を"false"にした後、sj3servとsj3proxyを起動してください。
