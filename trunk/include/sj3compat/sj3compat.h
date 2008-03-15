@@ -30,7 +30,7 @@
 #endif
 
 #ifndef MAXHOSTNAMELEN
-#define MAXHOSTNAMELEN 128
+#define MAXHOSTNAMELEN 256
 #endif
 
 #ifndef MAXLOGNAME
