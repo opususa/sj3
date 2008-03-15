@@ -24,7 +24,7 @@
 extern int chroot_enable;
 extern char address_family_str[256];
 extern int address_family;
-extern char chuser_name[BUFSIZ];
+extern char chuser_name[MAXLOGNAME];
 extern char chroot_dir[MAXPATHLEN];
 extern char socket_file[MAXPATHLEN];
 extern char host_name[NI_MAXHOST];
