@@ -94,7 +94,7 @@
 int chroot_enable = -1;
 char address_family_str[256];
 int address_family = AF_UNSPEC;
-char chuser_name[BUFSIZ];
+char chuser_name[MAXLOGNAME];
 char chroot_dir[MAXPATHLEN];
 char socket_file[MAXPATHLEN];
 char host_name[NI_MAXHOST];
