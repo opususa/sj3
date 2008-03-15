@@ -75,7 +75,7 @@ char domain_socket_name[MAXPATHLEN];
 char dict_dir[MAXPATHLEN];
 char dict_file[FILENAME_MAX];
 
-char chuser_name[BUFSIZ];
+char chuser_name[MAXLOGNAME];
 
 int chroot_enable = -1;
 char chroot_dir[MAXPATHLEN];
@@ -104,7 +104,7 @@ int file_mode = S_IRUSR | S_IWUSR;
 
 TAILQ_HEAD(, allow_user_entry) allow_user_head;
 struct allow_user_entry {
-	char username[BUFSIZ];
+	char username[MAXLOGNAME];
 	char hostname[MAXHOSTNAMELEN];
 	TAILQ_ENTRY(allow_user_entry) entries;
 } *allow_user;
@@ -243,7 +243,7 @@ set_error(lua_State *lstate)
 static int
 append_allowuser(lua_State *lstate)
 {
-	char username[BUFSIZ];
+	char username[MAXLOGNAME];
 	char hostname[MAXHOSTNAMELEN];
 
 	if (!sj3lua_check_table(lstate))

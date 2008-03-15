@@ -111,11 +111,11 @@ void debug_out(int, const char *, ...);
 /* main.c */
 void server_terminate();
 
-extern char program_name [MAXPATHLEN];
-extern char runcmd_file [MAXPATHLEN];
+extern char program_name[MAXPATHLEN];
+extern char runcmd_file[MAXPATHLEN];
 extern int daemon_enable;
 extern char pid_file[MAXPATHLEN];
-extern char chuser_name[BUFSIZ];
+extern char chuser_name[MAXLOGNAME];
 extern int chroot_enable;
 extern char chroot_dir[MAXPATHLEN];
 extern int strict_auth_enable;
