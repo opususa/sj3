@@ -93,7 +93,7 @@ server_terminate()
 {
 	close_socket();
 	sj_closeall();
-	exit_auth();
+	priv_exit();
 
 	exit(0);
 }
@@ -134,7 +134,7 @@ main(int argc, char **argv)
 
 	exec_daemon();
 
-	exec_auth();
+	priv_init();
 
 	set_signals();
 
@@ -142,7 +142,7 @@ main(int argc, char **argv)
 	open_socket();
 
 	if (chroot_enable == 1)
-		set_priv(NULL);
+		priv_set(NULL);
 
 	preload_dict();
 	preopen_dict();
@@ -152,7 +152,7 @@ main(int argc, char **argv)
 	close_socket();
 
 	sj_closeall();
-	exit_auth();
+	priv_exit();
 
 	exit(0);
 }
