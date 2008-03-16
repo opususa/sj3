@@ -93,7 +93,6 @@ server_terminate()
 {
 	close_socket();
 	sj_closeall();
-	priv_exit();
 
 	exit(0);
 }
@@ -152,7 +151,6 @@ main(int argc, char **argv)
 	close_socket();
 
 	sj_closeall();
-	priv_exit();
 
 	exit(0);
 }

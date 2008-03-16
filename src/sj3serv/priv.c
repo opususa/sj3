@@ -33,8 +33,7 @@ enum priv_state {
 };
 
 enum cmd_types {
-	PRIV_GETUGID,
-	PRIV_EXIT
+	PRIV_GETUGID
 };
 
 static int auth_fd = -1;
@@ -166,17 +165,12 @@ priv_init()
 			}
 			endpwent();
 			break;
-		case PRIV_EXIT:
-			close(socks[0]);
-			_exit(1);
 		default:
 			fprintf(stderr, "auth unknown command %d\n", cmd);
 			close(socks[0]);
 			_exit(255);
 		}
 	}
-	fprintf(stderr, "auth fatal error\n");
-
 	close(socks[0]);
 	_exit(1);
 }
@@ -255,11 +249,11 @@ must_write(int fd, void *buf, size_t n)
 static void
 sig_pass_to_chld(int sig)
 {
-	int oerrno = errno;
+	int save_errno = errno;
 
 	if (child_pid != -1)
 		kill(child_pid, sig);
-	errno = oerrno;
+	errno = save_errno;
 }
 
 /* When child dies, move into the shutdown state */
@@ -267,6 +261,7 @@ sig_pass_to_chld(int sig)
 static void
 sig_got_chld(int sig)
 {
+	int save_errno = errno;
 	pid_t   pid;
 
 	do {
@@ -274,6 +269,7 @@ sig_got_chld(int sig)
 		if (pid == child_pid && cur_state < STATE_QUIT)
 			cur_state = STATE_QUIT;
 	} while (pid > 0 || (pid == -1 && errno == EINTR));
+	errno = save_errno;
 }
 
 int
@@ -309,13 +305,4 @@ priv_getugid(char *username, sj3_ugid *ugid)
 	}
 }
 
-void
-priv_exit()
-{
-	int cmd = PRIV_EXIT;
-
-	must_write(auth_fd, &cmd, sizeof(int));
-
-	return;
-}
 
