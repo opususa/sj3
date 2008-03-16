@@ -32,7 +32,6 @@ exampledir = $(datadir)/examples/sj3
 sj3serv_SOURCES = \
 	sj_string.h \
 	sj3serv.h \
-	auth.c \
 	comuni.c \
 	error.c \
 	execute.c \

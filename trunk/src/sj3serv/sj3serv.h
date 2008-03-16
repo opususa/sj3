@@ -28,10 +28,10 @@ typedef struct {
 
 /* auth.c */
 
-int exec_auth();
-void exit_auth();
+int priv_init();
+void priv_exit();
 
-int auth_getugid(char *, sj3_ugid *);
+int priv_getugid(char *, sj3_ugid *);
 
 /* comuni.c */
 extern int client_num;

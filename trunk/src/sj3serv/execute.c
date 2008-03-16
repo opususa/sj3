@@ -194,7 +194,7 @@ exec_connect()
 	if (!(wp = alloc_workarea()))
 		longjmp(error_ret, SJ3_NotEnoughMemory);
 
-	if (auth_getugid(username, &ugid)) {
+	if (priv_getugid(username, &ugid)) {
 		struct sockaddr addr;
 		uid_t euid;
 		gid_t egid;
