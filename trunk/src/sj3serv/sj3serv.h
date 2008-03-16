@@ -29,7 +29,6 @@ typedef struct {
 /* auth.c */
 
 int priv_init();
-void priv_exit();
 
 int priv_getugid(char *, sj3_ugid *);
 
