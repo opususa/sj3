@@ -10,6 +10,6 @@
 ||kinput2||sj3lib||文節学習時にクラッシュするバグが存在:[http://www.tk2.nmt.ne.jp/~artrec/ar-sj3.shtml patch]||
 ||emacs-tamago||inet||sj3proxyの起動が必要||
 ||emcws||inet||sj3proxyの起動が必要||
-||uim-sj3||sj3lib||-trunkにのみ存在。文節学習未実装||
+||uim-sj3||sj3lib||-trunkにのみ存在。辞書登録機能未実装||
 
 注: sj3libを使用して接続するタイプのクライアントは、ホスト名に""を指定することでUNIXドメインソケットに直接接続することができます(kinput2ならば環境変数SJ3SERVに""を指定する、等)。それ以外の接続にはsj3proxyの起動が必要です。
