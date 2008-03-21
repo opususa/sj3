@@ -14,12 +14,12 @@
  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --]]
 
-local prefix = "%%SJ3VARDIR%%"
+local prefix = "@SJ3VARDIR@"
 
 sj3proxy.set_server {
    -- user: String
    --  run as user name
-   user = "%%SJ3OWNER%%",
+   user = "@SJ3OWNER@",
 
    -- chroot: Boolean
    --  sj3serv is chrooted or not
