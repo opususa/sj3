@@ -39,11 +39,6 @@ example_DATA = \
 	freebsd-sj3proxy.sh.in \
 	sj3proxy.lua.example
 
-sj3proxy.lua.example: sj3proxy.lua.example.in
-	sed -e "s,%%SJ3VARDIR%%,$(SJ3VARDIR),g" \
-	    -e "s,%%SJ3OWNER%%,$(SJ3OWNER),g" \
-	    sj3proxy.lua.example.in > sj3proxy.lua.example
-
 CLEANFILES = \
 	sj3proxy.lua.example
 

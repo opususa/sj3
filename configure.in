@@ -922,7 +922,9 @@ AC_CONFIG_FILES([
 	  src/sj3dic/Makefile
 	  src/sj3mkdic/Makefile
 	  src/sj3proxy/Makefile
+	  src/sj3proxy/sj3proxy.lua.example
 	  src/sj3serv/Makefile
+	  src/sj3serv/sj3serv.lua.example
 	  src/sj3stat/Makefile
 ])
 

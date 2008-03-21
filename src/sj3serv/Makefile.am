@@ -51,11 +51,6 @@ example_DATA = \
 time_stamp.c: time_stamp.sh
 	sh ./time_stamp.sh > time_stamp.c
 
-sj3serv.lua.example: sj3serv.lua.example.in
-	sed -e "s,%%SJ3VARDIR%%,$(SJ3VARDIR),g" \
-	    -e "s,%%SJ3OWNER%%,$(SJ3OWNER),g" \
-	    sj3serv.lua.example.in > sj3serv.lua.example
-
 CLEANFILES = \
 	sj3serv.lua.example \
 	time_stamp.c
