@@ -39,7 +39,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <errno.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/file.h>
 #include <sys/ioctl.h>
 #include <pwd.h>
@@ -88,6 +90,16 @@ terminate_handler(int sig)
 	server_terminate();
 }
 
+sigchild_handler(int sig)
+{
+	int save_errno = errno;
+	int status;
+
+	while (waitpid(-1, &status, WNOHANG) > 0)
+		;
+	errno = save_errno;
+}
+
 void
 server_terminate()
 {
@@ -104,6 +116,7 @@ set_signals()
 
 	signal(SIGINT,  (void (*)(int))terminate_handler);
 	signal(SIGQUIT, (void (*)(int))signal_handler);
+	signal(SIGCHLD, (void (*)(int))sigchild_handler);
 	signal(SIGTERM, (void (*)(int))terminate_handler);
 }
 
