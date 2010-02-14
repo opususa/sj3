@@ -5,7 +5,7 @@ INCLUDES = \
 	-I$(top_srcdir)/include/sj3common \
 	-I$(top_srcdir)/include/sj3core
 
-LDADD = $(top_srcdir)/lib/sj3compat/libsj3compat.la
+LDADD = $(top_builddir)/lib/sj3compat/libsj3compat.la
 
 sj3mkdic_SOURCES = \
 	GramTable \

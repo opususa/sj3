@@ -7,7 +7,7 @@ INCLUDES = \
 
 lib_LTLIBRARIES = libsj3lib.la
 
-libsj3lib_la_LDFLAGS = $(top_srcdir)/lib/sj3compat/libsj3compat.la -version-info @LIBSJ3LIB_VERSION_INFO@
+libsj3lib_la_LDFLAGS = $(top_builddir)/lib/sj3compat/libsj3compat.la -version-info @LIBSJ3LIB_VERSION_INFO@
 
 libsj3lib_la_SOURCES = \
 	level1.c \

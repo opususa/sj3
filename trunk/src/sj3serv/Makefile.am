@@ -14,8 +14,8 @@ INCLUDES = \
 	-I$(top_srcdir)/include/sj3lua
 
 LDADD = \
-	$(top_srcdir)/lib/sj3core/libsj3core.la \
-	$(top_srcdir)/lib/sj3lua/libsj3lua.la
+	$(top_builddir)/lib/sj3core/libsj3core.la \
+	$(top_builddir)/lib/sj3lua/libsj3lua.la
 
 if SJ3_INTERNAL_LUA
 AM_CFLAGS += -I$(top_builddir)/lib/lua/src
@@ -25,7 +25,7 @@ AM_CFLAGS += $(LUA_CFLAGS)
 LDADD     += $(LUA_LIBS)
 endif
 
-LDADD	+= $(top_srcdir)/lib/sj3compat/libsj3compat.la
+LDADD	+= $(top_builddir)/lib/sj3compat/libsj3compat.la
 
 exampledir = $(datadir)/examples/sj3
 
@@ -48,11 +48,12 @@ example_DATA = \
 	freebsd-sj3.sh.in \
 	sj3serv.lua.example
 
-time_stamp.c: time_stamp.sh
-	sh ./time_stamp.sh > time_stamp.c
+time_stamp.c: $(srcdir)/time_stamp.sh
+	sh $(srcdir)/time_stamp.sh > time_stamp.c
 
 CLEANFILES = \
 	sj3serv.lua.example \
 	time_stamp.c
 
 endif
+
