@@ -8,9 +8,9 @@ EXTRA_DIST = \
 INCLUDES = \
 	-I$(top_srcdir)/include/sj3common \
 	-I$(top_srcdir)/include/sj3compat \
-        -I$(top_srcdir)/include/sj3lua
+	-I$(top_srcdir)/include/sj3lua
 
-LDADD = $(top_srcdir)/lib/sj3lua/libsj3lua.la
+LDADD = $(top_builddir)/lib/sj3lua/libsj3lua.la
 
 AM_CFLAGS = $(lua_CFLAGS)
 
@@ -22,7 +22,7 @@ AM_CFLAGS += $(LUA_CFLAGS)
 LDADD     += $(LUA_LIBS)
 endif
 
-LDADD	+= $(top_srcdir)/lib/sj3compat/libsj3compat.la
+LDADD	+= $(top_builddir)/lib/sj3compat/libsj3compat.la
 
 exampledir = $(datadir)/examples/sj3
 
@@ -43,3 +43,4 @@ CLEANFILES = \
 	sj3proxy.lua.example
 
 endif
+

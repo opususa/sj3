@@ -7,7 +7,7 @@ INCLUDES = \
 AM_CFLAGS = $(lua_CFLAGS)
 
 if SJ3_INTERNAL_LUA
-AM_CFLAGS += -I$(top_builddir)/lib/lua/src
+AM_CFLAGS += -I$(top_srcdir)/lib/lua/src
 else
 AM_CFLAGS += $(LUA_CFLAGS)
 endif

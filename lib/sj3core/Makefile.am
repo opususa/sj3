@@ -7,7 +7,7 @@ INCLUDES = \
 
 lib_LTLIBRARIES = libsj3core.la
 
-libsj3core_la_LDFLAGS = $(top_srcdir)/lib/sj3compat/libsj3compat.la -version-info @LIBSJ3CORE_VERSION_INFO@
+libsj3core_la_LDFLAGS = $(top_builddir)/lib/sj3compat/libsj3compat.la -version-info @LIBSJ3CORE_VERSION_INFO@
 
 libsj3core_la_SOURCES = \
 	adddic.c \

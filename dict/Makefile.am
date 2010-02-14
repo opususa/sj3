@@ -5,9 +5,9 @@ EXTRA_DIST = visual.dic
 all: sj3main.dic
 
 sj3main.dic: visual.dic
-	$(top_srcdir)/src/sj3mkdic/sj3mkdic ./visual.dic sj3main.dic > Moutput
+	$(top_builddir)/src/sj3mkdic/sj3mkdic ./visual.dic sj3main.dic > Moutput
 
-install::
+install:: sj3main.dic
 	($(mkdir_p) $(DESTDIR)$(SJ3DICTDIR); \
 	 $(INSTALL_DATA) sj3main.dic $(DESTDIR)$(SJ3DICTDIR); \
 	 $(mkdir_p) $(DESTDIR)$(SJ3DICTDIR)/user; \

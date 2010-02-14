@@ -7,9 +7,9 @@ INCLUDES = \
 	-I$(top_srcdir)/include/sj3rkcv
 
 LDADD = \
-	$(top_srcdir)/lib/sj3lib/libsj3lib.la \
-	$(top_srcdir)/lib/sj3rkcv/libsj3rkcv.la \
-	$(top_srcdir)/lib/sj3compat/libsj3compat.la
+	$(top_builddir)/lib/sj3lib/libsj3lib.la \
+	$(top_builddir)/lib/sj3rkcv/libsj3rkcv.la \
+	$(top_builddir)/lib/sj3compat/libsj3compat.la
 
 AM_CPPFLAGS= -DORG
 
