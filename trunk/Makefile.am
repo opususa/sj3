@@ -15,4 +15,4 @@ SUBDIRS = \
 	dict
 
 install-data-local:
-	$(mkdir_p) $(SJ3VARDIR)
+	$(mkdir_p) $(DESTDIR)$(SJ3VARDIR)
