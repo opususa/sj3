@@ -1,3 +1,5 @@
+if BUILDABLE_SJ3SERV
+
 INCLUDES = \
 	-I$(top_srcdir)/include/sj3compat \
 	-I$(top_srcdir)/include/sj3lua
@@ -14,3 +16,5 @@ noinst_LTLIBRARIES = libsj3lua.la
 
 libsj3lua_la_SOURCES = \
 	sj3lua.c
+
+endif
