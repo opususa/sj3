@@ -91,7 +91,9 @@ main(int argc, char **argv)
 
 	loc = setlocale(LC_CTYPE, "");
 
-	if (strcmp(loc, "ja_JP.SJIS") == 0) {
+	if (!loc) {
+		fprintf(stderr, "Warning: Locale is not found.\n");
+	} else if (strcmp(loc, "ja_JP.SJIS") == 0) {
 		current_locale = LC_CTYPE_SHIFTJIS;
 	} else if (strncmp(loc, "ja", 2) != 0 &&
 	           strncmp(loc, "Ja", 2) != 0) {
