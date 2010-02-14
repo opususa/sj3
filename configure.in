@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT([sj3], [2.0.1.23], [iwata@quasiquote.org])
+AC_INIT([sj3], [2.0.1.23p1], [iwata@quasiquote.org])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([src/sj3serv/main.c])
 AC_CONFIG_HEADER([config.h])
